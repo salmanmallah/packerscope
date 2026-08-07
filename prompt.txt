@@ -1,0 +1,181 @@
+<USER_REQUEST>
+# Prompt for Claude Sonnet
+
+I want you to act as a **Senior Malware Researcher, Reverse Engineer, and Python Software Architect**. Your task is to design a complete, production-quality Python framework for **automatic packer detection, classification, and unpacking** of Windows PE files.
+
+This is a cybersecurity research and malware analysis project. The framework is intended **only for defensive security research, malware analysis, and educational purposes** inside an isolated malware analysis lab.
+
+---
+
+# Project Goal
+
+The ultimate objective is:
+
+1. Detect whether a PE file is packed, encrypted, or protected.
+2. Identify the exact packer (if possible).
+3. Estimate the confidence of detection.
+4. Select the best unpacking strategy automatically.
+5. Attempt unpacking using multiple techniques.
+6. Verify whether unpacking was successful.
+7. Produce a detailed report.
+8. Save both the original and unpacked samples for further static analysis.
+
+The framework should be modular, extensible, and easy to maintain.
+
+---
+
+# Programming Language
+
+Python 3.13+
+
+The architecture should be object-oriented where appropriate.
+
+---
+
+# Target Platform
+
+Windows
+
+The framework should also support Linux wherever possible.
+
+---
+
+# Main Design Goals
+
+The project should be modular.
+
+Each detection technique should be implemented as an independent module.
+
+New packers should be easy to add later.
+
+Future ML models should integrate without modifying existing code.
+
+---
+
+# Proposed Folder Structure
+
+Please redesign this if necessary.
+
+```
+packer_framework/
+
+│
+├── main.py
+├── config.py
+├── requirements.txt
+│
+├── detectors/
+│      entropy_detector.py
+│      section_detector.py
+│      signature_detector.py
+│      iat_detector.py
+│      pe_structure_detector.py
+│      heuristic_detector.py
+│      ml_detector.py
+│
+├── unpackers/
+│      upx_unpacker.py
+│      generic_unpacker.py
+│      dynamic_unpac
+<truncated 5931 bytes>
+:
+
+Detectors
+
+Signatures
+
+Packers
+
+Unpackers
+
+ML models
+
+YARA rules
+
+without modifying the existing codebase.
+
+---
+
+# Error Handling
+
+Gracefully handle:
+
+Corrupted PE
+
+Unsupported PE
+
+Unknown packer
+
+Encrypted executable
+
+Failed unpack
+
+Missing YARA
+
+Missing signature database
+
+---
+
+# Performance
+
+Design for scalability.
+
+Support scanning:
+
+Single file
+
+Folder
+
+Thousands of files
+
+Use concurrency where appropriate.
+
+---
+
+# Documentation
+
+Provide comprehensive documentation including:
+
+* High-level architecture diagram.
+* Data flow diagram.
+* UML class diagram.
+* Module responsibilities.
+* Sequence diagram for the detection pipeline.
+* Design decisions and trade-offs.
+* Recommended Python libraries and why they were chosen.
+* Testing strategy with unit and integration tests.
+* Future roadmap for adding new packers, ML models, and unpackers.
+
+---
+
+# Deliverables
+
+Do not start by writing all the code.
+
+Instead, first produce:
+
+1. Complete software architecture.
+2. Folder structure.
+3. Module-by-module responsibilities.
+4. Data flow.
+5. Class design.
+6. Interface definitions.
+7. Plugin architecture.
+8. Detection workflow.
+9. Unpacking workflow.
+10. ML workflow.
+11. Sequence diagrams.
+12. UML diagrams.
+13. Dependency graph.
+14. Recommended libraries.
+15. Development roadmap divided into milestones.
+
+After the architecture is approved, generate the project incrementally, one module at a time with production-quality, well-documented Python code, type hints, logging, unit tests, and clear explanations for every design decision.
+
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-07-16T10:26:53+05:00.
+</ADDITIONAL_METADATA>
+<USER_SETTINGS_CHANGE>
+The user changed setting `Model Selection` from None to Claude Opus 4.6 (Thinking). No need to comment on this change if the user doesn't ask about it. If reporting what model you are, please use a human readable name instead of the exact string.
+</USER_SETTINGS_CHANGE>

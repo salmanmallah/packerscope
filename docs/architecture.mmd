@@ -1,0 +1,22 @@
+graph TD
+    A[CLI Command] -->|Sends file path| B[Orchestrator]
+    B -->|1. Creates| C(PEContext)
+    C -.->|Loads PE Data| D[(File on Disk)]
+    B -->|2. Asks PluginManager| E[Plugin Manager]
+    E -.->|Returns ordered list| F{Detectors Pipeline}
+    
+    F -->|Detector 1| G(Section Detector)
+    F -->|Detector 2| H(Entropy Detector)
+    F -->|Detector 3| I(YARA / Signatures)
+    F -->|Detector N| J(Other Detectors...)
+    
+    G & H & I & J -->|Updates| C
+    
+    F -->|Runs Last| K((Heuristic Detector))
+    K -.->|Reads all previous results| C
+    K -->|Calculates Final Score| C
+    
+    C -->|3. Extracts Verdict| B
+    B -->|4. Unpack if needed| L[Unpackers]
+    B -->|5. Generate Output| M[Reporters]
+    M --> N[JSON/HTML Report]

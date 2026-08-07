@@ -1,0 +1,106 @@
+[build-system]
+requires = ["setuptools>=75.0", "wheel>=0.44"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "packerscope"
+version = "0.1.0"
+description = "Automatic packer detection, classification, and unpacking framework for Windows PE files."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.13"
+authors = [{ name = "0xghost" }]
+keywords = ["packer", "unpacker", "pe", "malware", "reverse-engineering", "binary-analysis"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security",
+    "Topic :: Software Development :: Disassemblers",
+    "Typing :: Typed",
+]
+
+dependencies = [
+    "pefile>=2024.8.26",
+    "pydantic>=2.9",
+    "pydantic-settings>=2.5",
+    "click>=8.1",
+    "rich>=13.9",
+    "structlog>=24.4",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+analysis = [
+    "lief>=0.15",
+    "capstone>=5.0",
+]
+yara = [
+    "yara-python>=4.5",
+]
+ml = [
+    "scikit-learn>=1.5",
+    "xgboost>=2.1",
+    "lightgbm>=4.5",
+    "catboost>=1.2",
+    "pandas>=2.2",
+    "numpy>=2.1",
+]
+dynamic = [
+    "frida>=16.5",
+    "qiling>=1.4",
+]
+hashing = [
+    "ppdeep>=20200723",
+]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+    "pytest-mock>=3.14",
+    "ruff>=0.5",
+]
+all = [
+    "packerscope[analysis,yara,ml,dynamic,hashing]",
+]
+
+[project.scripts]
+packerscope = "packerscope.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/0xghost/packerscope"
+Repository = "https://github.com/0xghost/packerscope"
+Issues = "https://github.com/0xghost/packerscope/issues"
+
+[tool.setuptools.packages.find]
+include = ["packerscope*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort
+    "N",    # pep8-naming
+    "UP",   # pyupgrade
+    "B",    # flake8-bugbear
+    "SIM",  # flake8-simplify
+    "TCH",  # flake8-type-checking
+    "RUF",  # ruff-specific rules
+]
+ignore = ["E501"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["packerscope"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-v --tb=short"

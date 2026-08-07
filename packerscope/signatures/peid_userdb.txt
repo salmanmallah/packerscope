@@ -1,0 +1,207 @@
+; ============================================================
+; PackerScope — PEiD Signature Database
+; Curated signatures for common packers and protectors
+; Format: [Name] / signature = hex bytes (?? = wildcard) / ep_only = true|false
+; ============================================================
+
+; === UPX Signatures ===
+
+[UPX v0.89.6 - v1.02]
+signature = 60 E8 00 00 00 00 58 83 E8 3D
+ep_only = true
+
+[UPX v1.06 - v1.24]
+signature = 60 BE ?? ?? ?? ?? 8D BE ?? ?? ?? ?? 57 83 CD FF
+ep_only = true
+
+[UPX v1.24 (LZMA)]
+signature = 60 BE ?? ?? ?? ?? 8D BE ?? ?? ?? ?? C7 87 ?? ?? ?? ?? ?? ?? ?? ?? 57 83 CD FF
+ep_only = true
+
+[UPX v2.00 - v2.90]
+signature = 60 BE ?? ?? ?? ?? 8D BE ?? ?? ?? ?? 57 89 E5 8D 9C 24
+ep_only = true
+
+[UPX v3.0x]
+signature = 60 BE ?? ?? ?? ?? 8D BE ?? ?? ?? ?? 57 89 E5 8D 9C 24 80 C1 FF FF
+ep_only = true
+
+[UPX v3.91 - v4.x]
+signature = 55 53 83 EC ?? 8B ?? ?? ?? ?? ?? 85 C9 0F 84
+ep_only = true
+
+[UPX Scrambler]
+signature = E8 00 00 00 00 59 83 C1 07 51 C3 C3 BE ?? ?? ?? ?? 83 EC 04
+ep_only = true
+
+; === ASPack Signatures ===
+
+[ASPack v2.12]
+signature = 60 E8 03 00 00 00 E9 EB 04 5D 45 55 C3 E8 01
+ep_only = true
+
+[ASPack v2.11]
+signature = 60 E8 02 00 00 00 EB 09 5D 55 81 ED 39 39 44 00
+ep_only = true
+
+[ASPack v2.12b]
+signature = 60 E8 03 00 00 00 E9 EB 04 5D 45 55 C3 E8 01 00 00 00 EB 5D
+ep_only = true
+
+[ASPack v2.24]
+signature = 60 E8 70 05 00 00 EB 33
+ep_only = true
+
+[ASPack v1.08.03]
+signature = 60 EB 03 5D FF E5 E8 F8 FF FF FF 81 ED 1B 6A 44 00 BB 10 6A 44 00 03 DD
+ep_only = true
+
+; === MPRESS Signatures ===
+
+[MPRESS v2.xx]
+signature = 60 E8 00 00 00 00 58 05 ?? ?? ?? ?? 8B 30 03 F0
+ep_only = true
+
+[MPRESS v2.19]
+signature = 57 56 53 83 EC 40 E8 ?? ?? ?? ?? C7
+ep_only = true
+
+; === FSG Signatures ===
+
+[FSG v1.0]
+signature = BB D0 01 40 00 BF 00 10 40 00 BE ?? ?? ?? ?? 53 E8 0A 00 00 00
+ep_only = true
+
+[FSG v1.33]
+signature = BE ?? ?? ?? ?? AD 93 AD 97 AD 56 96 B2 80
+ep_only = true
+
+[FSG v2.0]
+signature = 87 25 ?? ?? ?? ?? 61 94 55 A4 B6 80 FF 13
+ep_only = true
+
+; === PECompact Signatures ===
+
+[PECompact v2.xx]
+signature = B8 ?? ?? ?? ?? 50 64 FF 35 00 00 00 00 64 89 25 00 00 00 00 33 C0 89 08 50
+ep_only = true
+
+[PECompact v1.40 - v1.45]
+signature = EB 06 68 ?? ?? ?? ?? C3 9C 60 E8 02 00 00 00 33 C0 8B C4 83 C0 04 93
+ep_only = true
+
+; === Petite Signatures ===
+
+[Petite v2.1]
+signature = B8 ?? ?? ?? ?? 68 ?? ?? ?? ?? 64 FF 35 00 00 00 00 64 89 25 00 00 00 00 66 9C 60 50
+ep_only = true
+
+[Petite v2.2]
+signature = B8 ?? ?? ?? ?? 66 9C 60 50 8D ?? ?? ?? ?? ?? 68 ?? ?? ?? 00 83
+ep_only = true
+
+; === NSPack Signatures ===
+
+[NSPack v2.x - v3.x]
+signature = 9C 60 E8 00 00 00 00 5D 83 ED 07 8D 85
+ep_only = true
+
+[NSPack v3.7]
+signature = 9C 60 E8 00 00 00 00 5D B8 07 00 00 00 2B E8 8D B5
+ep_only = true
+
+; === Themida Signatures ===
+
+[Themida v1.x - v2.x]
+signature = B8 00 00 00 00 60 0B C0 74 68 E8 00 00 00 00
+ep_only = true
+
+[Themida v2.x (variant)]
+signature = 8B C5 8B D4 60 E8 00 00 00 00 5D 81 ED ?? ?? ?? 00
+ep_only = true
+
+; === VMProtect Signatures ===
+
+[VMProtect v1.x - v2.x]
+signature = 68 ?? ?? ?? ?? E8 ?? ?? ?? ?? 00 00 00 00 00
+ep_only = true
+
+[VMProtect v3.x]
+signature = 68 ?? ?? ?? ?? E8 01 00 00 00 C3
+ep_only = true
+
+; === MEW Signatures ===
+
+[MEW v11 SE v1.2]
+signature = E9 ?? ?? ?? FF 00 00 00 02 00 00 00 0C 00
+ep_only = true
+
+[MEW v10 - v11]
+signature = 50 BE ?? ?? ?? ?? 8D BE ?? ?? ?? FF 57
+ep_only = true
+
+; === Armadillo Signatures ===
+
+[Armadillo v1.xx - v2.xx]
+signature = 55 8B EC 6A FF 68 ?? ?? ?? ?? 68 ?? ?? ?? ?? 64 A1 00 00 00 00 50 64 89 25 00 00 00 00 83 EC 58
+ep_only = true
+
+[Armadillo v4.x - v5.x]
+signature = 60 E8 00 00 00 00 5D 50 51 EB 0F B9 EB 0F B8 EB 07 B9 EB 0F 90 EB 08 FD EB 0B F2 EB F5 EB F6
+ep_only = true
+
+; === Enigma Protector Signatures ===
+
+[Enigma Protector v1.x]
+signature = 60 E8 00 00 00 00 5D 83 ED 06 80 BD ?? ?? ?? ?? 01
+ep_only = true
+
+[Enigma Protector v3.x - v4.x]
+signature = 55 8B EC 83 C4 F0 B8 00 10 40 00 E8 01 00 00 00
+ep_only = true
+
+; === Obsidium Signatures ===
+
+[Obsidium v1.x]
+signature = EB 02 ?? ?? E8 ?? 00 00 00
+ep_only = true
+
+[Obsidium v1.3.x]
+signature = EB 04 ?? ?? ?? ?? E8 29 00 00 00
+ep_only = true
+
+; === UPack Signatures ===
+
+[UPack v0.39 Final]
+signature = BE ?? ?? ?? ?? AD 8B F8 95 AD 91 F3 A5 AD
+ep_only = true
+
+[UPack v0.24 - v0.37]
+signature = 0B C0 0F 84 ?? ?? 00 00 E9 ?? ?? ?? ?? 5D EB
+ep_only = true
+
+; === MoleBox Signatures ===
+
+[MoleBox v2.x]
+signature = E8 00 00 00 00 60 E8 4F 00 00 00
+ep_only = true
+
+[MoleBox v2.3 - v2.6]
+signature = E8 B8 00 00 00 2D ?? ?? 40 00 50 60 E8 03 00 00 00
+ep_only = true
+
+; === WinUpack Signatures ===
+
+[WinUpack v0.39]
+signature = BE ?? ?? ?? ?? AD 8B F8 95 AD 91 F3 A5 AD
+ep_only = true
+
+; === Generic Packer Signatures ===
+
+[Generic PUSHAD Stub]
+signature = 60 E8 00 00 00 00 5D 81 ED
+ep_only = true
+
+[Generic PUSHFD+PUSHAD]
+signature = 9C 60 E8 00 00 00 00 5D
+ep_only = true
