@@ -22,10 +22,6 @@ pip install -r requirements.txt
 
 PackerScope supports optional features that require additional libraries. You can install them via pip if needed:
 
-- **Machine Learning Support:** (For Random Forest / XGBoost detection)
-  ```bash
-  pip install scikit-learn xgboost pandas numpy
-  ```
 - **Disassembly Heuristics:** (For deep Entry Point analysis)
   ```bash
   pip install capstone
@@ -113,24 +109,6 @@ python -m packerscope.cli info <file_path>
 python -m packerscope.cli info C:\malware\sample.exe
 ```
 
----
-
-### Command: `train`
-Trains the optional Machine Learning models using a CSV dataset of extracted features.
-
-**Usage:**
-```bash
-python -m packerscope.cli train --dataset <csv_file> [OPTIONS]
-```
-
-**Options:**
-- `--model-type`, `-m`: The type of model to train (`random_forest`, `xgboost`, `lightgbm`, `catboost`).
-- `--output`, `-o`: Filepath to save the compiled `.joblib` model binary.
-
-**Example:**
-```bash
-python -m packerscope.cli train --dataset C:\data\malware_features.csv -m random_forest
-```
 
 ---
 

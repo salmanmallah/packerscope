@@ -136,27 +136,6 @@ class YARAError(PackerScopeError):
 
 
 # ---------------------------------------------------------------------------
-# Machine Learning
-# ---------------------------------------------------------------------------
-
-
-class MLModelError(PackerScopeError):
-    """Raised when an ML model cannot be loaded, is incompatible, or fails inference.
-
-    Args:
-        message: Description of the model failure.
-        model_path: Path to the model artifact that caused the error.
-    """
-
-    def __init__(self, message: str, model_path: Path) -> None:
-        self.model_path: Path = model_path
-        super().__init__(message)
-
-    def __str__(self) -> str:
-        return f"ML model error for '{self.model_path}': {self.message}"
-
-
-# ---------------------------------------------------------------------------
 # Plugins
 # ---------------------------------------------------------------------------
 

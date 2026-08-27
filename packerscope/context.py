@@ -38,7 +38,6 @@ from packerscope.core.models import (
     DetectionResult,
     EntryPointAnalysis,
     EntropyResult,
-    FeatureVector,
     FileMetadata,
     ImportAnalysis,
     PackerVerdict,
@@ -73,7 +72,6 @@ class PEContext:
         imports: Import table analysis.
         entrypoint: Entry point analysis.
         structure: PE structure analysis.
-        features: Extracted ML feature vector.
         verdict: Final packer verdict.
         unpack_result: Unpacking attempt results.
         verification: Post-unpack verification results.
@@ -119,7 +117,6 @@ class PEContext:
         self.imports: ImportAnalysis | None = None
         self.entrypoint: EntryPointAnalysis | None = None
         self.structure: StructureAnalysis | None = None
-        self.features: FeatureVector | None = None
 
         # Verdict
         self.verdict: PackerVerdict | None = None

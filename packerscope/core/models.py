@@ -41,7 +41,6 @@ __all__ = [
     "DetectionResult",
     "EntryPointAnalysis",
     "EntropyResult",
-    "FeatureVector",
     "FileMetadata",
     "ImportAnalysis",
     "ImportInfo",
@@ -1100,64 +1099,3 @@ class AnalysisReport(BaseModel):
         default="0.1.0",
         description="PackerScope version string.",
     )
-
-
-# ========================================================================
-# Feature Vector (ML Pipeline)
-# ========================================================================
-
-
-class FeatureVector(BaseModel):
-    """Numeric feature vector for the machine-learning classification pipeline.
-
-    Stores an arbitrary mapping of feature names to values.  Provides
-    convenience methods for converting to a flat numeric array (for
-    sklearn / xgboost) and for introspection.
-
-    Attributes:
-        features: Mapping of feature name → feature value.  Values may
-            be ``float``, ``int``, or ``str`` (categorical features are
-            excluded from :meth:`to_array`).
-    """
-
-    features: dict[str, float | int | str] = Field(
-        default_factory=dict,
-        description="Feature name → value mapping.",
-    )
-
-    def to_array(self) -> list[float]:
-        """Return only numeric feature values as a flat list.
-
-        Non-numeric (string) features are silently excluded.  The
-        ordering matches the insertion order of :attr:`features`.
-
-        Returns:
-            A list of ``float`` values suitable for feeding into an
-            ML model's ``predict()`` method.
-
-        Example:
-            >>> fv = FeatureVector(features={"entropy": 7.2, "sections": 3, "name": "foo"})
-            >>> fv.to_array()
-            [7.2, 3.0]
-        """
-        return [
-            float(v)
-            for v in self.features.values()
-            if isinstance(v, (int, float))
-        ]
-
-    def to_dict(self) -> dict[str, Any]:
-        """Return the full feature mapping as a plain dictionary.
-
-        Returns:
-            A shallow copy of :attr:`features`.
-        """
-        return dict(self.features)
-
-    def feature_names(self) -> list[str]:
-        """Return an ordered list of all feature names.
-
-        Returns:
-            Feature names in insertion order.
-        """
-        return list(self.features.keys())

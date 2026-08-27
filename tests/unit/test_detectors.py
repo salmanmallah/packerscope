@@ -255,16 +255,33 @@ class TestHeuristicDetector:
             whole_file_class=EntropyClass.VERY_HIGH,
             section_entropies=[
                 SectionEntropy(name=".text", entropy=7.5, entropy_class=EntropyClass.VERY_HIGH, offset=0, size=4096),
+                SectionEntropy(name=".data", entropy=7.6, entropy_class=EntropyClass.VERY_HIGH, offset=4096, size=4096),
             ],
-            max_section_entropy=7.5,
+            max_section_entropy=7.6,
             min_section_entropy=7.5,
-            mean_section_entropy=7.5,
+            mean_section_entropy=7.55,
         )
         ctx.sections = []
         ctx.imports = None
         ctx.structure = None
         ctx.entrypoint = None
-        ctx.detection_results = {}
+        ctx.detection_results = {
+            "sections": DetectionResult(
+                detector_name="sections",
+                method=DetectionMethod.SECTION_ANALYSIS,
+                is_packed=True,
+                packer_hint=PackerType.UPX,
+                confidence=0.9,
+                reasons=["Known packer section UPX0"],
+            ),
+            "iat": DetectionResult(
+                detector_name="iat",
+                method=DetectionMethod.IAT_ANALYSIS,
+                is_packed=True,
+                confidence=0.8,
+                reasons=["Tiny IAT"],
+            ),
+        }
 
         detector = HeuristicDetector()
         result = detector.detect(ctx)

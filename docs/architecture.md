@@ -25,7 +25,6 @@ The `PluginManager` dynamically discovers these plugins by traversing builtin di
 | `packerscope.unpackers` | Implementations of `BaseUnpacker` covering native tools (`UPXUnpacker`), generic templates, and dynamic emulation hooks. |
 | `packerscope.verification` | Validates unpacked output against the original context to confirm success (e.g., verifying entropy reduction, section restoration). |
 | `packerscope.reporters` | Implementations of `BaseReporter` generating output formats (JSON, CSV, Markdown, HTML). |
-| `packerscope.ml` | Optional machine learning modules (Random Forest, XGBoost) for classifying feature vectors extracted from `HeuristicDetector`. |
 
 ## 3. Data Flow Diagram
 
@@ -41,7 +40,7 @@ graph TD
         D --> G{IAT}
         D --> H{Signatures}
         D --> I{YARA}
-        D --> J{Heuristics / ML}
+        D --> J{Heuristics}
     end
     
     E & F & G & H & I & J -.->|Writes Result| C
@@ -146,7 +145,6 @@ classDiagram
 1. **`pefile` Abstraction:** Parsing malformed/packed PE files with `pefile` can lead to uncaught exceptions. To mitigate this, `pefile.PE` is wrapped inside a safe `PEParser` utility class. The design trades minor performance overhead for total stability during batch scanning.
 2. **Strategy Pattern for Heuristics:** Instead of a massive conditional block determining the packer type, individual detectors provide focused metrics (e.g., Section anomalies, Entropy classes). The final `HeuristicDetector` aggregates these weighted metrics. This allows for simple threshold tuning via configuration.
 3. **Pydantic Models:** Using Pydantic for all data models (e.g., `DetectionResult`, `PackerVerdict`) enforces strict typing, runtime validation, and out-of-the-box JSON serialization. This greatly simplified the development of the reporting subsystem.
-4. **Machine Learning Opt-in:** Dependencies like `scikit-learn` and `xgboost` are heavy. ML detection is completely decoupled and configured as an optional `extras` installation. The pipeline degrades gracefully if ML libraries are missing.
 
 ## 7. Recommended Python Libraries & Justification
 
@@ -158,7 +156,6 @@ classDiagram
 | `structlog` | `>=24.4` | Structured JSON logging. Critical for ingesting logs into SIEMs/ELK stacks in an analysis lab. |
 | `rich` | `>=13.9` | Advanced terminal rendering. Makes the CLI tool highly readable with colorized tables and progress bars. |
 | `yara-python` | `>=4.5` | Standard pattern matching engine for malware researchers. |
-| `scikit-learn`/`xgboost` | `>=1.5` | Optional ML dependencies for training Random Forest / XGBoost models on extracted PE features. |
 
 ## 8. Testing Strategy
 
@@ -175,10 +172,6 @@ classDiagram
 - Integrate the `Qiling` framework to implement full CPU emulation in `DynamicUnpacker`.
 - Integrate `Frida` hooks to dump process memory dynamically when standard VirtualAlloc unpacking techniques are identified.
 
-### Milestone C: Machine Learning Expansion
-- Deploy pre-trained model binaries (`packer_xgboost.joblib`) out-of-the-box.
-- Expand `FeatureExtractor` to calculate CFG (Control Flow Graph) complexity metrics.
-
-### Milestone D: Community Threat Intel
+### Milestone C: Community Threat Intel
 - Fetch updated YARA rules from GitHub threat intel repositories.
 - Add support for UnpacMe API submissions.

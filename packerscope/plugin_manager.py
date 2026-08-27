@@ -140,7 +140,6 @@ class PluginManager:
                         "signatures": "signatures",
                         "yara": "yara",
                         "heuristic": "heuristic",
-                        "ml_classifier": "ml",
                     }
                     config_key = config_map.get(attr_name, "")
                     if config_key and hasattr(det_config, config_key):
@@ -157,14 +156,6 @@ class PluginManager:
                 elif DetectorClass.__name__ == "HeuristicDetector":
                     weights = self._config.heuristic_weights if self._config else None
                     instance = DetectorClass(weights=weights)
-                elif DetectorClass.__name__ == "MLDetector":
-                    ml_dir = self._config.ml_models_dir if self._config else None
-                    model_path = None
-                    if ml_dir and ml_dir.exists():
-                        models = list(ml_dir.glob("*.joblib"))
-                        if models:
-                            model_path = models[0]
-                    instance = DetectorClass(model_path=model_path)
                 else:
                     instance = DetectorClass()
 

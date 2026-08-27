@@ -42,14 +42,6 @@ analysis = [
 yara = [
     "yara-python>=4.5",
 ]
-ml = [
-    "scikit-learn>=1.5",
-    "xgboost>=2.1",
-    "lightgbm>=4.5",
-    "catboost>=1.2",
-    "pandas>=2.2",
-    "numpy>=2.1",
-]
 dynamic = [
     "frida>=16.5",
     "qiling>=1.4",
@@ -64,7 +56,7 @@ dev = [
     "ruff>=0.5",
 ]
 all = [
-    "packerscope[analysis,yara,ml,dynamic,hashing]",
+    "packerscope[analysis,yara,dynamic,hashing]",
 ]
 
 [project.scripts]

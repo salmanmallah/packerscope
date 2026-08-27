@@ -1,14 +1,13 @@
 """PackerScope command-line interface.
 
-Provides the ``packerscope`` CLI for single file analysis, batch
-scanning, and ML model training.
+Provides the ``packerscope`` CLI for single file analysis and batch
+scanning.
 
 Usage:
     packerscope scan sample.exe
     packerscope scan --format json,html samples/
     packerscope batch samples/ --workers 8
     packerscope info sample.exe
-    packerscope train --dataset training.csv --model-type random_forest
 """
 
 from __future__ import annotations
@@ -187,39 +186,6 @@ def info(ctx: click.Context, file: str) -> None:
                     f"{sec.raw_size:,}", f"{ent:.4f}",
                 )
             console.print(sec_table)
-
-
-@main.command()
-@click.option("--dataset", "-d", type=click.Path(exists=True), required=True, help="Training CSV file")
-@click.option("--model-type", "-m", default="random_forest",
-              type=click.Choice(["random_forest", "xgboost", "lightgbm", "catboost"]),
-              help="ML model type")
-@click.option("--output", "-o", type=click.Path(), default=None, help="Model output path")
-@click.pass_context
-def train(
-    ctx: click.Context,
-    dataset: str,
-    model_type: str,
-    output: str | None,
-) -> None:
-    """Train an ML model for packer classification."""
-    from packerscope.ml.trainer import ModelTrainer
-
-    config: Config = ctx.obj["config"]
-    trainer = ModelTrainer()
-
-    console.print(f"[cyan]Loading dataset: {dataset}[/cyan]")
-    trainer.load_dataset(Path(dataset))
-
-    console.print(f"[cyan]Training {model_type} model...[/cyan]")
-    results = trainer.train(model_type=model_type)
-
-    console.print(f"[green]Accuracy: {results['accuracy']:.2%}[/green]")
-    console.print(f"Train samples: {results['train_samples']} | Test samples: {results['test_samples']}")
-
-    output_path = Path(output) if output else config.ml_models_dir / f"packer_{model_type}.joblib"
-    trainer.save_model(output_path)
-    console.print(f"[green]Model saved to: {output_path}[/green]")
 
 
 def _analyze_single(orch: Orchestrator, file_path: Path) -> None:

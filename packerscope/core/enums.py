@@ -215,9 +215,6 @@ class DetectionMethod(StrEnum):
     HEURISTIC = auto()
     """Composite heuristics combining multiple lightweight signals."""
 
-    MACHINE_LEARNING = auto()
-    """ML-model inference on extracted feature vectors."""
-
 
 # ---------------------------------------------------------------------------
 # EntropyClass

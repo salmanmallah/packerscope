@@ -91,7 +91,6 @@ class DetectorConfig(BaseModel):
     signatures: bool = Field(default=True, description="Enable signature scanning")
     yara: bool = Field(default=True, description="Enable YARA scanning")
     heuristic: bool = Field(default=True, description="Enable heuristic engine")
-    ml: bool = Field(default=False, description="Enable ML classification")
 
 
 class Config(BaseSettings):
@@ -123,10 +122,6 @@ class Config(BaseSettings):
         default=Path("packerscope/signatures/yara_rules"),
         description="Directory containing YARA rule files",
     )
-    ml_models_dir: Path = Field(
-        default=Path("packerscope/ml/models"),
-        description="Directory containing trained ML models",
-    )
     output_dir: Path = Field(
         default=Path("output"),
         description="Default output directory for reports and unpacked files",
@@ -151,10 +146,6 @@ class Config(BaseSettings):
     )
 
     # --- Feature Toggles ---
-    enable_ml: bool = Field(
-        default=False,
-        description="Enable ML-based detection (requires trained model)",
-    )
     enable_yara: bool = Field(
         default=True,
         description="Enable YARA rule scanning",

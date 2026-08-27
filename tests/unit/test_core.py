@@ -16,7 +16,6 @@ from packerscope.core.models import (
     AnalysisReport,
     DetectionResult,
     EntropyResult,
-    FeatureVector,
     FileMetadata,
     ImportAnalysis,
     ImportInfo,
@@ -163,23 +162,6 @@ class TestFileMetadata:
                 md5="abc", sha1="def", sha256="ghi",
                 file_size=100, file_name="test.exe", file_path="/tmp/test.exe",
             )
-
-
-class TestFeatureVector:
-    """Tests for FeatureVector model."""
-
-    def test_to_array_numeric_only(self):
-        fv = FeatureVector(features={"a": 1.0, "b": 2, "c": "text"})
-        arr = fv.to_array()
-        assert len(arr) == 2
-        assert 1.0 in arr
-        assert 2 in arr
-
-    def test_feature_names(self):
-        fv = FeatureVector(features={"alpha": 1.0, "beta": 2.0})
-        names = fv.feature_names()
-        assert "alpha" in names
-        assert "beta" in names
 
 
 class TestAnalysisReport:

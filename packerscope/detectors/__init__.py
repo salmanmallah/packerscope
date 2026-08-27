@@ -8,7 +8,6 @@ from packerscope.detectors.entropy_detector import EntropyDetector
 from packerscope.detectors.entrypoint_detector import EntryPointDetector
 from packerscope.detectors.heuristic_detector import HeuristicDetector
 from packerscope.detectors.iat_detector import IATDetector
-from packerscope.detectors.ml_detector import MLDetector
 from packerscope.detectors.pe_structure_detector import PEStructureDetector
 from packerscope.detectors.section_detector import SectionDetector
 from packerscope.detectors.signature_detector import SignatureDetector
@@ -22,7 +21,6 @@ ALL_DETECTORS = [
     PEStructureDetector,
     SignatureDetector,
     YARADetector,
-    MLDetector,
     HeuristicDetector,
 ]
 
@@ -34,7 +32,6 @@ __all__ = [
     "PEStructureDetector",
     "SignatureDetector",
     "YARADetector",
-    "MLDetector",
     "HeuristicDetector",
     "ALL_DETECTORS",
 ]

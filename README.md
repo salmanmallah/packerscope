@@ -13,7 +13,6 @@
   - **Signature Matching:** Fast byte-pattern matching using PEiD-style `userdb.txt` databases.
   - **YARA Scanning:** Deep static analysis utilizing community or custom YARA rules.
   - **Heuristics Engine:** Aggregates weak signals across all modules to form a high-confidence final verdict.
-  - **Machine Learning (Optional):** Employs Random Forest / XGBoost classifiers based on extracted feature vectors.
 
 - **Automated Unpacking (Pluggable):**
   - **UPXUnpacker:** Native fast decompression using the `upx` system binary.
@@ -41,7 +40,7 @@
 pip install -r requirements.txt
 ```
 
-*(Optional)* For advanced features like ML and disassembly, you can install optional dependency groups defined in `pyproject.toml`.
+*(Optional)* For advanced features like disassembly and dynamic analysis, you can install optional dependency groups defined in `pyproject.toml`.
 
 ## Usage
 
@@ -60,11 +59,6 @@ python -m packerscope.cli batch samples/ --workers 8 --format csv
 ### View Quick PE Information
 ```bash
 python -m packerscope.cli info samples/malware.exe
-```
-
-### Train the ML Model
-```bash
-python -m packerscope.cli train --dataset training_data.csv --model-type random_forest
 ```
 
 ## Architecture
@@ -89,7 +83,6 @@ packer_identifier_framework/
 │   ├── plugin_manager.py      # Plugin discovery and registration
 │   ├── core/                  # Interfaces, Enums, and Pydantic Models
 │   ├── detectors/             # Detection modules (Entropy, IAT, YARA, etc.)
-│   ├── ml/                    # Feature extraction and model training
 │   ├── reporters/             # Output generators (JSON, CSV, HTML, MD)
 │   ├── signatures/            # PEiD signature parsing
 │   ├── unpackers/             # Unpacking strategies

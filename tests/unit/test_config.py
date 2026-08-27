@@ -68,7 +68,3 @@ class TestDetectorConfig:
         assert dc.signatures is True
         assert dc.yara is True
         assert dc.heuristic is True
-
-    def test_ml_disabled_by_default(self):
-        dc = DetectorConfig()
-        assert dc.ml is False
