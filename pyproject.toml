@@ -9,7 +9,7 @@ description = "Automatic packer detection, classification, and unpacking framewo
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.13"
-authors = [{ name = "0xghost" }]
+authors = [{ name = "Salman Mallah", email = "mallahsalman06@gmail.com" }]
 keywords = ["packer", "unpacker", "pe", "malware", "reverse-engineering", "binary-analysis"]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -63,9 +63,9 @@ all = [
 packerscope = "packerscope.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/0xghost/packerscope"
-Repository = "https://github.com/0xghost/packerscope"
-Issues = "https://github.com/0xghost/packerscope/issues"
+Homepage = "https://github.com/salmanmallah/packerscope"
+Repository = "https://github.com/salmanmallah/packerscope"
+Issues = "https://github.com/salmanmallah/packerscope/issues"
 
 [tool.setuptools.packages.find]
 include = ["packerscope*"]
