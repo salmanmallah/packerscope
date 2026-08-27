@@ -13,7 +13,7 @@ PackerScope requires **Python 3.13+**. It is heavily optimized for Windows but c
 Clone the repository and install the core dependencies:
 
 ```bash
-git clone https://github.com/0xghost/packerscope.git
+git clone https://github.com/salmanmallah/packerscope.git
 cd packerscope
 pip install -r requirements.txt
 ```
