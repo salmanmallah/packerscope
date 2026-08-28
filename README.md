@@ -1,107 +1,205 @@
 # PackerScope
 
-**PackerScope** is a production-quality Python framework for automatic packer detection, classification, and unpacking of Windows PE files. It is designed for defensive security research, malware analysis labs, and educational purposes.
+**PackerScope** is a production-grade Python framework for automated Windows PE packer detection, classification, and unpacking. Designed for defensive security analysts, reverse engineers, and malware analysis laboratories.
+
+---
 
 ## Features
 
 - **Multi-layered Detection Pipeline:**
-  - **Entropy Analysis:** Measures Shannon entropy across the whole file, sections, and via a sliding window.
+  - **Entropy Analysis:** Measures Shannon entropy across whole files, sections, and via sliding-window heuristics.
   - **Section Analysis:** Detects anomalous section names (e.g., `UPX0`, `.vmp0`), extreme virtual-to-raw size ratios, and abnormal permissions (RWX).
-  - **IAT Analysis:** Analyzes Import Address Table sparseness and suspicious API usage (e.g., `LoadLibrary`, `VirtualAlloc`).
-  - **Entry Point Analysis:** Disassembles entry point instructions using Capstone to detect jump chains, NOP sleds, and push/ret trampolines.
-  - **Structure Analysis:** Identifies anomalies in PE optional and file headers, missing directories, or invalid timestamps.
-  - **Signature Matching:** Fast byte-pattern matching using PEiD-style `userdb.txt` databases.
+  - **IAT Analysis:** Analyzes Import Address Table sparseness and suspicious loader API usage.
+  - **Entry Point Analysis:** Disassembles entry point instructions using Capstone to detect stubs, jump chains, and trampolines.
+  - **Structure Analysis:** Identifies structural PE header anomalies, misaligned headers, and invalid metadata.
+  - **Signature Matching:** Built-in byte-pattern scanning using PEiD database signatures.
   - **YARA Scanning:** Deep static analysis utilizing community or custom YARA rules.
-  - **Heuristics Engine:** Aggregates weak signals across all modules to form a high-confidence final verdict.
+  - **Heuristic Aggregator:** Combines weighted multi-module signals into an ensemble packing verdict.
 
-- **Automated Unpacking (Pluggable):**
-  - **UPXUnpacker:** Native fast decompression using the `upx` system binary.
-  - **GenericStaticUnpacker:** Template for static algorithmic decompression (aPLib, LZMA).
-  - **DynamicUnpacker:** Template for dynamic unpacking via emulation (Qiling/Unicorn) or instrumentation (Frida).
+- **Automated Unpacking:**
+  - **UPXUnpacker:** Native decompression using the UPX binary.
+  - **GenericStaticUnpacker:** Framework for static decompression routines.
+  - **DynamicUnpacker:** Dynamic emulation and instrumentation unpacker integration.
 
-- **Verification Subsystem:** Automatically verifies the success of an unpacking attempt by checking PE validity, entropy reduction, IAT restoration, and section normalization.
+- **Verification Subsystem:** Automatically verifies unpacked binaries by validating PE integrity, entropy reduction, and IAT restoration.
 
-- **Reporting:** Generates comprehensive analysis reports in JSON, CSV, Markdown, and HTML formats.
+- **Multi-Format Reporting:** Generates structured reports in JSON, CSV, Markdown, and HTML formats.
 
-- **Developer-Friendly:** Written in modern Python 3.13+, completely type-hinted, and modular using Pydantic v2 data models and the Blackboard design pattern (`PEContext`).
-
-## Requirements
-
-- Python 3.13+
-- Windows (Primary target OS, though the framework runs on Linux/macOS)
-- Recommended external tools: `upx`, Capstone
+---
 
 ## Installation
 
-1. Clone the repository or navigate to the framework directory.
-2. Install the required dependencies:
+### From PyPI
 
 ```bash
-pip install -r requirements.txt
+pip install packerscope
 ```
 
-*(Optional)* For advanced features like disassembly and dynamic analysis, you can install optional dependency groups defined in `pyproject.toml`.
+### From Source
 
-## Usage
+```bash
+git clone https://github.com/salmanmallah/packerscope.git
+cd packerscope
+pip install .
+```
 
-PackerScope provides an easy-to-use Command Line Interface (CLI):
+### Optional Dependencies
+
+For additional disassembly, YARA, or dynamic analysis capabilities:
+
+```bash
+pip install "packerscope[all]"
+```
+
+---
+
+## Quickstart (Python API)
+
+PackerScope provides a simple, high-level Python API designed for rapid analysis and easy scripting.
+
+### Basic Analysis
+
+```python
+import packerscope
+
+# Analyze a single binary
+result = packerscope.scan("path/to/sample.exe")
+
+if result.is_packed:
+    print(f"File is packed with {result.packer.upper()}")
+    print(f"Confidence: {result.confidence:.2%}")
+    print("Detection Reasons:")
+    for reason in result.reasons:
+        print(f"  - {reason}")
+else:
+    print("File is not packed.")
+```
+
+### Dictionary Summary
+
+```python
+import packerscope
+
+result = packerscope.scan("path/to/sample.exe")
+summary = result.summary()
+
+print(summary)
+# {
+#     "file_name": "sample.exe",
+#     "file_path": "C:\\samples\\sample.exe",
+#     "is_packed": True,
+#     "packer": "upx",
+#     "confidence": 0.85,
+#     "confidence_level": "high",
+#     "reasons": [...],
+#     "analysis_duration_seconds": 0.02
+# }
+```
+
+### Automatic Unpacking
+
+```python
+import packerscope
+
+# Analyze and unpack if a supported packer is found
+result = packerscope.scan("path/to/sample.exe", unpack=True)
+
+if result.unpack_result and result.unpack_result.success:
+    print(f"Unpacked file saved to: {result.unpack_result.unpacked_path}")
+```
+
+### Batch Scanning a Directory
+
+```python
+import packerscope
+
+# Scan all PE files in a directory concurrently
+results = packerscope.batch_scan("samples_folder/", workers=8)
+
+for res in results:
+    status = "PACKED" if res.is_packed else "NOT PACKED"
+    print(f"{res.file_name:<30} | {status:<10} | {res.packer:<10} | {res.confidence:.2%}")
+```
+
+---
+
+## Command Line Interface (CLI)
+
+PackerScope can also be executed directly from your terminal:
 
 ### Analyze a Single File
+
 ```bash
-python -m packerscope.cli scan samples/malware.exe --format json,html --output results/
+packerscope scan samples/sample.exe --format json,html --output results/
 ```
 
 ### Batch Analyze a Directory
+
 ```bash
-python -m packerscope.cli batch samples/ --workers 8 --format csv
+packerscope batch samples/ --workers 8 --format csv
 ```
 
-### View Quick PE Information
+### Quick PE Information
+
 ```bash
-python -m packerscope.cli info samples/malware.exe
+packerscope info samples/sample.exe
 ```
+
+---
 
 ## Architecture
 
-1. **Orchestrator:** Manages the entire pipeline (Initialization → Detection → Verdict → Unpack → Verify → Report).
-2. **PEContext:** The central Blackboard state object. Parsed PE data and detector results are shared here.
-3. **Plugin Manager:** Dynamically discovers and loads detectors, unpackers, and reporters from the framework and external directories.
-4. **Detectors:** Implement `BaseDetector`. Executed in priority order.
-5. **Unpackers:** Implement `BaseUnpacker`. Selected dynamically based on the final packer verdict.
+1. **Orchestrator:** Coordinates pipeline lifecycle: Initialization -> Detection -> Verdict -> Unpack -> Verify -> Report.
+2. **PEContext:** Central blackboard state object. Parsed PE artifacts and detector results are shared here.
+3. **Plugin Manager:** Dynamically discovers and loads detectors, unpackers, reporters, and verifiers.
+4. **Detectors:** Independent modules implementing `BaseDetector`, executed in priority order.
+5. **Unpackers:** Modules implementing `BaseUnpacker`, invoked based on verdict classification.
+
+---
 
 ## Project Structure
 
 ```
 packer_identifier_framework/
 ├── packerscope/
+│   ├── __init__.py            # Top-level public API (scan, detect, batch_scan)
 │   ├── cli.py                 # Command-line interface
 │   ├── config.py              # Central configuration (Pydantic Settings)
 │   ├── constants.py           # Thresholds and heuristics constants
 │   ├── context.py             # PEContext (Blackboard state)
 │   ├── exceptions.py          # Custom exceptions
 │   ├── orchestrator.py        # Pipeline execution logic
-│   ├── plugin_manager.py      # Plugin discovery and registration
+│   ├── plugin_manager.py      # Dynamic plugin discovery
 │   ├── core/                  # Interfaces, Enums, and Pydantic Models
 │   ├── detectors/             # Detection modules (Entropy, IAT, YARA, etc.)
-│   ├── reporters/             # Output generators (JSON, CSV, HTML, MD)
-│   ├── signatures/            # PEiD signature parsing
-│   ├── unpackers/             # Unpacking strategies
-│   ├── utils/                 # Helpers (disasm, entropy, hasher, pe_parser)
-│   └── verification/          # Unpack verification logic
-├── plugins/                   # Directory for custom third-party plugins
+│   ├── reporters/             # Report generators (JSON, CSV, HTML, MD)
+│   ├── signatures/            # PEiD signature database & parser
+│   ├── unpackers/             # Unpacker implementations
+│   ├── utils/                 # Binary analysis helpers & structured logging
+│   └── verification/          # Post-unpack verification logic
 ├── tests/                     # Unit and Integration tests
-├── pyproject.toml             # Project metadata and dependencies
+├── pyproject.toml             # Packaging metadata and dependency definitions
 └── requirements.txt           # Flat dependency list
 ```
 
+---
+
 ## Running Tests
 
-PackerScope comes with a comprehensive test suite covering core models, utility functions, detectors, config, and orchestrator integration.
+Execute the automated test suite using pytest:
 
 ```bash
-pytest tests/ -v
+python -m pytest
 ```
+
+---
+
+## License
+
+This project is licensed under the MIT License. See `LICENSE` for details.
+
+---
 
 ## Disclaimer
 
-**Educational and Research Purposes Only.** This framework is intended strictly for defensive security research, malware analysis, and educational use within isolated malware analysis lab environments. Do not use this tool on systems or files you do not have permission to analyze.
+**Educational and Defensive Research Purposes Only.** This framework is intended strictly for defensive security research, malware analysis, and educational use within authorized environments.

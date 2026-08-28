@@ -1096,6 +1096,52 @@ class AnalysisReport(BaseModel):
         description="When the analysis was performed.",
     )
     framework_version: str = Field(
-        default="0.1.0",
+        default="0.2.0",
         description="PackerScope version string.",
     )
+
+    @property
+    def is_packed(self) -> bool:
+        """Whether the target file is packed."""
+        return self.verdict.is_packed if self.verdict else False
+
+    @property
+    def packer(self) -> str:
+        """Identified packer name (e.g. 'upx', 'aspack', 'none')."""
+        if not self.verdict or not self.verdict.packer:
+            return "none"
+        if hasattr(self.verdict.packer, "value"):
+            return str(self.verdict.packer.value)
+        return str(self.verdict.packer)
+
+    @property
+    def confidence(self) -> float:
+        """Verdict confidence score [0.0, 1.0]."""
+        return self.verdict.confidence if self.verdict else 0.0
+
+    @property
+    def confidence_level(self) -> ConfidenceLevel:
+        """Verdict qualitative confidence tier."""
+        return self.verdict.confidence_level if self.verdict else ConfidenceLevel.NONE
+
+    @property
+    def reasons(self) -> list[str]:
+        """Human-readable reasons supporting the verdict."""
+        return self.verdict.reasons if self.verdict else []
+
+    def summary(self) -> dict[str, Any]:
+        """Return a simplified, clean dictionary summary of the analysis."""
+        return {
+            "file_name": self.file_name,
+            "file_path": self.file_path,
+            "is_packed": self.is_packed,
+            "packer": self.packer,
+            "confidence": self.confidence,
+            "confidence_level": (
+                self.confidence_level.value
+                if hasattr(self.confidence_level, "value")
+                else str(self.confidence_level)
+            ),
+            "reasons": self.reasons,
+            "analysis_duration_seconds": self.analysis_duration_seconds,
+        }

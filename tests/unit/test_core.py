@@ -179,4 +179,12 @@ class TestAnalysisReport:
         )
         assert report.file_name == "test.exe"
         assert not report.verdict.is_packed
-        assert report.framework_version == "0.1.0"
+        assert not report.is_packed
+        assert report.packer == "none"
+        assert report.confidence == 0.0
+        assert report.reasons == []
+        summary = report.summary()
+        assert summary["is_packed"] is False
+        assert summary["packer"] == "none"
+        assert summary["file_name"] == "test.exe"
+        assert report.framework_version == "0.2.0"

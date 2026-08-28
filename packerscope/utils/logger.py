@@ -39,7 +39,7 @@ _BACKUP_COUNT: int = 5
 
 
 def setup_logging(
-    level: str = "INFO",
+    level: str = "WARNING",
     log_file: Path | None = None,
     json_output: bool = False,
 ) -> None:

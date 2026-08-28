@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "packerscope"
-version = "0.1.1"
+version = "0.2.0"
 description = "Automatic packer detection, classification, and unpacking framework for Windows PE files."
 readme = "README.md"
 license = "MIT"
@@ -69,6 +69,13 @@ Issues = "https://github.com/salmanmallah/packerscope/issues"
 
 [tool.setuptools.packages.find]
 include = ["packerscope*"]
+
+[tool.setuptools.package-data]
+packerscope = [
+    "py.typed",
+    "signatures/*.txt",
+    "signatures/yara_rules/**/*.yar",
+]
 
 [tool.ruff]
 line-length = 100
