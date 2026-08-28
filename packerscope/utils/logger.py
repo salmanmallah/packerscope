@@ -109,12 +109,19 @@ def setup_logging(
 
             _install_rich_tb(show_locals=False, width=120)
 
+            use_colors = True
+            if sys.platform == "win32":
+                try:
+                    import colorama  # noqa: F401
+                except ImportError:
+                    use_colors = False
+
             renderer = structlog.dev.ConsoleRenderer(
-                colors=True,
+                colors=use_colors,
                 exception_formatter=structlog.dev.plain_traceback,
             )
-        except ImportError:
-            # Fallback when rich is not available.
+        except (ImportError, SystemError):
+            # Fallback when rich/colorama is not available or raises SystemError on Windows.
             renderer = structlog.dev.ConsoleRenderer(colors=False)
 
     structlog.configure(
