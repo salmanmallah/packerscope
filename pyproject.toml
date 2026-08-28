@@ -7,7 +7,7 @@ name = "packerscope"
 version = "0.1.1"
 description = "Automatic packer detection, classification, and unpacking framework for Windows PE files."
 readme = "README.md"
-license = { text = "MIT" }
+license = "MIT"
 requires-python = ">=3.13"
 authors = [{ name = "Salman Mallah", email = "mallahsalman06@gmail.com" }]
 keywords = ["packer", "unpacker", "pe", "malware", "reverse-engineering", "binary-analysis"]
@@ -15,7 +15,6 @@ classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
     "Intended Audience :: Information Technology",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: Microsoft :: Windows",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.13",
