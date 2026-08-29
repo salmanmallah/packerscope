@@ -10,6 +10,7 @@ readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"
 authors = [{ name = "Salman Mallah", email = "mallahsalman06@gmail.com" }]
+maintainers = [{ name = "Salman Mallah", email = "mallahsalman06@gmail.com" }]
 keywords = ["packer", "unpacker", "pe", "malware", "reverse-engineering", "binary-analysis"]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -71,6 +72,7 @@ packerscope = "packerscope.cli:main"
 Homepage = "https://github.com/salmanmallah/packerscope"
 Repository = "https://github.com/salmanmallah/packerscope"
 Issues = "https://github.com/salmanmallah/packerscope/issues"
+Changelog = "https://github.com/salmanmallah/packerscope/releases"
 
 [tool.setuptools.packages.find]
 include = ["packerscope*"]

@@ -194,6 +194,31 @@ python -m pytest
 
 ---
 
+## Author & Maintainer
+
+- **Salman Mallah**
+- **GitHub:** [@salmanmallah](https://github.com/salmanmallah)
+- **Email:** mallahsalman06@gmail.com
+- **Repository:** [https://github.com/salmanmallah/packerscope](https://github.com/salmanmallah/packerscope)
+- **PyPI:** [https://pypi.org/project/packerscope/](https://pypi.org/project/packerscope/)
+
+---
+
+## Citation
+
+If you use **PackerScope** in academic research, security tooling, or malware analysis publications, please cite:
+
+```bibtex
+@software{packerscope2026,
+  author = {Salman Mallah},
+  title = {PackerScope: Automated Windows PE Packer Detection and Unpacking Framework},
+  year = {2026},
+  url = {https://github.com/salmanmallah/packerscope}
+}
+```
+
+---
+
 ## License
 
 This project is licensed under the MIT License. See `LICENSE` for details.

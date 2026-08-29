@@ -19,6 +19,8 @@ try:
 except PackageNotFoundError:
     __version__ = "0.2.1"
 __author__ = "Salman Mallah"
+__maintainer__ = "Salman Mallah"
+__email__ = "mallahsalman06@gmail.com"
 __all__ = [
     "AnalysisReport",
     "ConfidenceLevel",
@@ -29,6 +31,8 @@ __all__ = [
     "PackerVerdict",
     "ReportFormat",
     "__author__",
+    "__email__",
+    "__maintainer__",
     "__version__",
     "batch_scan",
     "detect",
