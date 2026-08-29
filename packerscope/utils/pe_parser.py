@@ -17,9 +17,10 @@ Typical usage::
 
 from __future__ import annotations
 
+import contextlib
 import datetime
 from pathlib import Path
-from typing import NamedTuple, Self
+from typing import NamedTuple
 
 import pefile
 import structlog
@@ -173,15 +174,13 @@ class PEParser:
     def close(self) -> None:
         """Release the underlying ``pefile.PE`` object."""
         if self._pe is not None:
-            try:
+            with contextlib.suppress(Exception):
                 self._pe.close()
-            except Exception:  # noqa: BLE001
-                pass
             self._pe = None
         self._valid = False
 
     # Context-manager support
-    def __enter__(self) -> Self:
+    def __enter__(self) -> PEParser:
         return self
 
     def __exit__(self, *_exc: object) -> None:

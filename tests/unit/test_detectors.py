@@ -10,11 +10,10 @@ import pytest
 from packerscope.core.enums import DetectionMethod, EntropyClass, PackerType
 from packerscope.core.models import DetectionResult, EntropyResult, SectionEntropy, SectionInfo
 from packerscope.detectors.entropy_detector import EntropyDetector
-from packerscope.detectors.section_detector import SectionDetector
-from packerscope.detectors.iat_detector import IATDetector
 from packerscope.detectors.heuristic_detector import HeuristicDetector
+from packerscope.detectors.iat_detector import IATDetector
+from packerscope.detectors.section_detector import SectionDetector
 from packerscope.signatures.peid_parser import PEiDParser
-
 
 # ── Fixtures ───────────────────────────────────────────────────────────────
 

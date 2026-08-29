@@ -30,7 +30,8 @@ class JSONReporter(BaseReporter):
             Path to the generated JSON file.
         """
         output_dir.mkdir(parents=True, exist_ok=True)
-        filename = f"{report.file_name}_{report.metadata.sha256[:12]}.json"
+        safe_name = Path(report.file_name).name.replace("/", "_").replace("\\", "_")
+        filename = f"{safe_name}_{report.metadata.sha256[:12]}.json"
         output_path = output_dir / filename
 
         data = report.model_dump(mode="json")

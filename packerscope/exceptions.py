@@ -9,7 +9,6 @@ from __future__ import annotations
 
 from pathlib import Path
 
-
 # ---------------------------------------------------------------------------
 # Base
 # ---------------------------------------------------------------------------
@@ -189,7 +188,12 @@ class FileTooLargeError(PackerScopeError):
         max_size: Maximum allowed size in bytes.
     """
 
-    def __init__(self, message: str, file_size: int, max_size: int) -> None:
+    def __init__(
+        self,
+        message: str = "File size exceeds configured maximum limit.",
+        file_size: int = 0,
+        max_size: int = 0,
+    ) -> None:
         self.file_size: int = file_size
         self.max_size: int = max_size
         super().__init__(message)

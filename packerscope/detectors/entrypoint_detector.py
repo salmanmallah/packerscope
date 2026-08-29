@@ -11,7 +11,7 @@ from __future__ import annotations
 import time
 from typing import TYPE_CHECKING
 
-from packerscope.core.enums import DetectionMethod, PackerType
+from packerscope.core.enums import DetectionMethod
 from packerscope.core.interfaces import BaseDetector
 from packerscope.core.models import DetectionResult, EntryPointAnalysis
 from packerscope.utils.disasm import Disassembler

@@ -19,7 +19,6 @@ from typing import TYPE_CHECKING
 
 from packerscope.constants import (
     DEFAULT_HEURISTIC_WEIGHTS,
-    SUSPICIOUS_SECTION_NAMES,
 )
 from packerscope.core.enums import (
     ConfidenceLevel,

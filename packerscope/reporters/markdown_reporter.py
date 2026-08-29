@@ -29,13 +29,14 @@ class MarkdownReporter(BaseReporter):
             Path to the generated Markdown file.
         """
         output_dir.mkdir(parents=True, exist_ok=True)
-        filename = f"{report.file_name}_{report.metadata.sha256[:12]}.md"
+        safe_name = Path(report.file_name).name.replace("/", "_").replace("\\", "_")
+        filename = f"{safe_name}_{report.metadata.sha256[:12]}.md"
         output_path = output_dir / filename
 
         lines: list[str] = []
         v = report.verdict
 
-        lines.append(f"# PackerScope Analysis Report")
+        lines.append("# PackerScope Analysis Report")
         lines.append("")
         lines.append(f"**File**: `{report.file_name}`  ")
         lines.append(f"**Path**: `{report.file_path}`  ")
@@ -47,8 +48,8 @@ class MarkdownReporter(BaseReporter):
         emoji = "🔴" if v.is_packed else "🟢"
         lines.append(f"## {emoji} Verdict")
         lines.append("")
-        lines.append(f"| Property | Value |")
-        lines.append(f"|---|---|")
+        lines.append("| Property | Value |")
+        lines.append("|---|---|")
         lines.append(f"| **Packed** | {v.is_packed} |")
         lines.append(f"| **Packer** | {v.packer.value} |")
         lines.append(f"| **Confidence** | {v.confidence:.2%} ({v.confidence_level.value}) |")
@@ -64,8 +65,8 @@ class MarkdownReporter(BaseReporter):
         m = report.metadata
         lines.append("## 📋 File Metadata")
         lines.append("")
-        lines.append(f"| Hash | Value |")
-        lines.append(f"|---|---|")
+        lines.append("| Hash | Value |")
+        lines.append("|---|---|")
         lines.append(f"| MD5 | `{m.md5}` |")
         lines.append(f"| SHA1 | `{m.sha1}` |")
         lines.append(f"| SHA256 | `{m.sha256}` |")
@@ -78,8 +79,8 @@ class MarkdownReporter(BaseReporter):
             e = report.entropy
             lines.append("## 📊 Entropy Analysis")
             lines.append("")
-            lines.append(f"| Metric | Value |")
-            lines.append(f"|---|---|")
+            lines.append("| Metric | Value |")
+            lines.append("|---|---|")
             lines.append(f"| Whole file | {e.whole_file_entropy:.4f} ({e.whole_file_class.value}) |")
             lines.append(f"| Max section | {e.max_section_entropy:.4f} |")
             lines.append(f"| Min section | {e.min_section_entropy:.4f} |")

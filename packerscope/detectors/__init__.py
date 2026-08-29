@@ -25,13 +25,13 @@ ALL_DETECTORS = [
 ]
 
 __all__ = [
+    "ALL_DETECTORS",
     "EntropyDetector",
-    "SectionDetector",
-    "IATDetector",
     "EntryPointDetector",
+    "HeuristicDetector",
+    "IATDetector",
     "PEStructureDetector",
+    "SectionDetector",
     "SignatureDetector",
     "YARADetector",
-    "HeuristicDetector",
-    "ALL_DETECTORS",
 ]

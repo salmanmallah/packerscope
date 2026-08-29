@@ -7,11 +7,12 @@ that indicate packing, protection, or manipulation.
 
 from __future__ import annotations
 
+import contextlib
 import time
 from datetime import datetime, timezone
 from typing import TYPE_CHECKING
 
-from packerscope.core.enums import DetectionMethod, PackerType
+from packerscope.core.enums import DetectionMethod
 from packerscope.core.interfaces import BaseDetector
 from packerscope.core.models import DetectionResult, StructureAnalysis
 from packerscope.utils.entropy import calculate_entropy
@@ -83,7 +84,7 @@ class PEStructureDetector(BaseDetector):
                     cb_start = tls_dir.struct.AddressOfCallBacks
                     if cb_start:
                         tls_count = 1  # At least one callback
-                        anomalies.append(f"TLS callbacks present (anti-debug / unpacking)")
+                        anomalies.append("TLS callbacks present (anti-debug / unpacking)")
                         confidence = max(confidence, 0.30)
             except Exception:
                 pass
@@ -102,10 +103,8 @@ class PEStructureDetector(BaseDetector):
         has_resources = pe.has_resources
         resource_count = 0
         if has_resources:
-            try:
+            with contextlib.suppress(Exception):
                 resource_count = self._count_resources(pe.pe)
-            except Exception:
-                pass
 
         # --- Debug info ---
         has_debug = pe.has_debug

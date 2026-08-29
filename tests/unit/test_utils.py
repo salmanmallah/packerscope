@@ -12,7 +12,6 @@ from packerscope.core.enums import EntropyClass
 from packerscope.utils.entropy import calculate_entropy, classify_entropy
 from packerscope.utils.hasher import FileHasher
 
-
 # ── Entropy Tests ──────────────────────────────────────────────────────────
 
 class TestCalculateEntropy:

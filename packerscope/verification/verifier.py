@@ -7,6 +7,7 @@ characteristics, and basic PE validity against the original.
 
 from __future__ import annotations
 
+import contextlib
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
@@ -132,10 +133,8 @@ class UnpackVerifier(BaseVerifier):
         comparison["size_unpacked"] = unpacked_size
         comparison["size_ratio"] = round(unpacked_size / max(orig_size, 1), 2)
 
-        try:
+        with contextlib.suppress(Exception):
             unpacked_pe.close()
-        except Exception:
-            pass
 
         logger.info(
             "verification_complete",

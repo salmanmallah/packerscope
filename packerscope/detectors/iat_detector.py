@@ -11,7 +11,7 @@ import time
 from typing import TYPE_CHECKING
 
 from packerscope.constants import SUSPICIOUS_APIS
-from packerscope.core.enums import DetectionMethod, PackerType
+from packerscope.core.enums import DetectionMethod
 from packerscope.core.interfaces import BaseDetector
 from packerscope.core.models import DetectionResult, ImportAnalysis, ImportInfo
 from packerscope.utils.logger import get_logger
@@ -69,7 +69,6 @@ class IATDetector(BaseDetector):
         suspicious_found: list[str] = []
 
         for imp in raw_imports:
-            dll_name = imp.dll_name.lower()
             all_dlls.append(imp.dll_name)
             funcs = imp.functions
             all_apis.extend(funcs)

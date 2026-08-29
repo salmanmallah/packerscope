@@ -19,7 +19,22 @@ Example:
 
 from __future__ import annotations
 
-from enum import StrEnum, auto
+try:
+    from enum import StrEnum, auto
+except ImportError:  # pragma: no cover (Python < 3.11 fallback)
+    from enum import Enum, auto
+
+    class StrEnum(str, Enum):  # type: ignore[no-redef]
+        """Python 3.10 compatibility fallback for StrEnum."""
+
+        @staticmethod
+        def _generate_next_value_(
+            name: str, start: int, count: int, last_values: list[str]
+        ) -> str:
+            return name.lower()
+
+        def __str__(self) -> str:
+            return str(self.value)
 
 __all__ = [
     "ConfidenceLevel",

@@ -7,21 +7,18 @@ processing with concurrent execution.
 
 from __future__ import annotations
 
+import threading
 import time
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 from packerscope.config import Config
 from packerscope.context import PEContext
-from packerscope.core.enums import ConfidenceLevel, PackerType, ReportFormat
+from packerscope.core.enums import ConfidenceLevel, PackerType
 from packerscope.core.models import AnalysisReport, PackerVerdict
-from packerscope.exceptions import FileTooLargeError, PackerScopeError, PEParseError
+from packerscope.exceptions import FileTooLargeError
 from packerscope.plugin_manager import PluginManager
 from packerscope.utils.concurrency import AnalysisPool
 from packerscope.utils.logger import get_logger
-
-if TYPE_CHECKING:
-    pass
 
 logger = get_logger(__name__)
 
@@ -44,15 +41,17 @@ class Orchestrator:
         self._config = config or Config()
         self._plugin_manager = PluginManager(self._config)
         self._initialized = False
+        self._lock = threading.Lock()
 
     def initialize(self) -> None:
         """Discover plugins and prepare for analysis."""
-        if self._initialized:
-            return
-        self._config.ensure_directories()
-        self._plugin_manager.discover_plugins()
-        self._initialized = True
-        logger.info("orchestrator_initialized")
+        with self._lock:
+            if self._initialized:
+                return
+            self._config.ensure_directories()
+            self._plugin_manager.discover_plugins()
+            self._initialized = True
+            logger.info("orchestrator_initialized")
 
     def analyze(self, file_path: Path) -> AnalysisReport:
         """Run the complete analysis pipeline on a single PE file.
@@ -79,7 +78,11 @@ class Orchestrator:
 
         file_size = file_path.stat().st_size
         if file_size > self._config.max_file_size:
-            raise FileTooLargeError(file_size, self._config.max_file_size)
+            raise FileTooLargeError(
+                "File exceeds maximum allowed size",
+                file_size=file_size,
+                max_size=self._config.max_file_size,
+            )
 
         # Create context
         with PEContext(file_path) as ctx:

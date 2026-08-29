@@ -33,7 +33,8 @@ class HTMLReporter(BaseReporter):
             Path to the generated HTML file.
         """
         output_dir.mkdir(parents=True, exist_ok=True)
-        filename = f"{report.file_name}_{report.metadata.sha256[:12]}.html"
+        safe_name = Path(report.file_name).name.replace("/", "_").replace("\\", "_")
+        filename = f"{safe_name}_{report.metadata.sha256[:12]}.html"
         output_path = output_dir / filename
 
         v = report.verdict

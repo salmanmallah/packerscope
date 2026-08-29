@@ -28,7 +28,6 @@ from packerscope.core.models import (
     YARAMatch,
 )
 
-
 # ── Enum Tests ─────────────────────────────────────────────────────────────
 
 class TestPackerType:
@@ -46,7 +45,7 @@ class TestPackerType:
 
     def test_comparison_with_string(self):
         # StrEnum auto() generates lowercase member names
-        assert PackerType.UPX == PackerType.UPX.value
+        assert PackerType.UPX.value == PackerType.UPX
 
 
 class TestConfidenceLevel:
@@ -157,7 +156,7 @@ class TestFileMetadata:
         assert m.file_name == "test.exe"
 
     def test_short_hash_rejected(self):
-        with pytest.raises(Exception):
+        with pytest.raises(ValueError):
             FileMetadata(
                 md5="abc", sha1="def", sha256="ghi",
                 file_size=100, file_name="test.exe", file_path="/tmp/test.exe",

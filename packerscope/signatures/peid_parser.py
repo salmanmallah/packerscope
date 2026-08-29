@@ -13,7 +13,6 @@ PEiD format::
 
 from __future__ import annotations
 
-import re
 from pathlib import Path
 from typing import NamedTuple
 
@@ -72,7 +71,7 @@ class PEiDParser:
         current_ep: bool = True
 
         try:
-            with open(self._db_path, "r", encoding="utf-8", errors="ignore") as f:
+            with open(self._db_path, encoding="utf-8", errors="ignore") as f:
                 for line_num, line in enumerate(f, 1):
                     line = line.strip()
 

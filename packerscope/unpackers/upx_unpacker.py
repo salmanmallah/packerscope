@@ -38,12 +38,13 @@ class UPXUnpacker(BaseUnpacker):
         """Check if the ``upx`` binary is on PATH."""
         return shutil.which("upx") is not None
 
-    def unpack(self, ctx: PEContext, output_path: Path) -> UnpackResult:
+    def unpack(self, ctx: PEContext, output_path: Path, timeout: int = 60) -> UnpackResult:
         """Unpack using ``upx -d``.
 
         Args:
             ctx: Analysis context.
             output_path: Where to write the unpacked file.
+            timeout: Subprocess timeout in seconds.
 
         Returns:
             UnpackResult indicating success or failure.
@@ -59,25 +60,13 @@ class UPXUnpacker(BaseUnpacker):
                 unpacker_name=self.name,
             )
 
-        # Copy original to output path
-        try:
-            shutil.copy2(ctx.file_path, output_path)
-        except OSError as e:
-            return UnpackResult(
-                success=False,
-                strategy_used=UnpackStrategy.NATIVE_TOOL.value,
-                error_message=f"Failed to copy file: {e}",
-                duration_seconds=time.monotonic() - start,
-                unpacker_name=self.name,
-            )
-
-        # Run UPX decompression
+        # Run UPX decompression directly to output_path
         try:
             result = subprocess.run(
                 ["upx", "-d", "-o", str(output_path), "--force", str(ctx.file_path)],
                 capture_output=True,
                 text=True,
-                timeout=60,
+                timeout=timeout,
             )
 
             if result.returncode == 0:
@@ -109,7 +98,7 @@ class UPXUnpacker(BaseUnpacker):
             return UnpackResult(
                 success=False,
                 strategy_used=UnpackStrategy.NATIVE_TOOL.value,
-                error_message="UPX process timed out (60s)",
+                error_message=f"UPX process timed out ({timeout}s)",
                 duration_seconds=time.monotonic() - start,
                 unpacker_name=self.name,
             )

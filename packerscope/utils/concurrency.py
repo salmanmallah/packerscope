@@ -15,9 +15,10 @@ Typical usage::
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from concurrent.futures import Future, ThreadPoolExecutor, as_completed
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 import structlog
 from rich.progress import (
@@ -112,7 +113,7 @@ class AnalysisPool:
                     file_path = file_paths[idx]
                     try:
                         results[idx] = future.result()
-                    except Exception as exc:  # noqa: BLE001
+                    except Exception as exc:
                         logger.error(
                             "file_analysis_failed",
                             file=str(file_path),

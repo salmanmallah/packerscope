@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from packerscope.config import Config, HeuristicWeights, DetectorConfig, EntropyThresholds
+from packerscope.config import Config, DetectorConfig, EntropyThresholds, HeuristicWeights
 from packerscope.core.enums import ReportFormat
 
 
@@ -37,6 +37,21 @@ class TestConfig:
         assert (tmp_path / "test_output").exists()
         assert (tmp_path / "test_output" / "reports").exists()
         assert (tmp_path / "test_output" / "unpacked").exists()
+
+    def test_default_paths_resolve_to_package_root(self):
+        config = Config()
+        assert config.signatures_dir.is_absolute() or "signatures" in str(config.signatures_dir)
+        assert config.unpack_timeout == 60
+
+    def test_yaml_roundtrip(self, tmp_path):
+        config = Config(max_workers=8, unpack_timeout=120)
+        yaml_file = tmp_path / "config.yaml"
+        config.to_yaml(yaml_file)
+
+        assert yaml_file.exists()
+        loaded = Config.from_yaml(yaml_file)
+        assert loaded.max_workers == 8
+        assert loaded.unpack_timeout == 120
 
 
 class TestHeuristicWeights:

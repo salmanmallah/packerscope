@@ -25,6 +25,7 @@ Example:
 from __future__ import annotations
 
 from datetime import datetime
+from importlib.metadata import PackageNotFoundError, version
 from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field, computed_field
@@ -39,8 +40,8 @@ from packerscope.core.enums import (
 __all__ = [
     "AnalysisReport",
     "DetectionResult",
-    "EntryPointAnalysis",
     "EntropyResult",
+    "EntryPointAnalysis",
     "FileMetadata",
     "ImportAnalysis",
     "ImportInfo",
@@ -989,6 +990,13 @@ class VerificationResult(BaseModel):
 # ========================================================================
 
 
+def _get_framework_version() -> str:
+    try:
+        return version("packerscope")
+    except PackageNotFoundError:
+        return "0.2.0"
+
+
 class AnalysisReport(BaseModel):
     """Complete analysis report for a single PE file.
 
@@ -1096,7 +1104,7 @@ class AnalysisReport(BaseModel):
         description="When the analysis was performed.",
     )
     framework_version: str = Field(
-        default="0.2.0",
+        default_factory=_get_framework_version,
         description="PackerScope version string.",
     )
 

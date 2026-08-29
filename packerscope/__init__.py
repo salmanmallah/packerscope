@@ -6,15 +6,18 @@ access to internal pipeline components.
 
 from __future__ import annotations
 
+from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
 
 from packerscope.config import Config
 from packerscope.core.enums import ConfidenceLevel, DetectionMethod, PackerType, ReportFormat
 from packerscope.core.models import AnalysisReport, PackerVerdict
 from packerscope.orchestrator import Orchestrator
 
-__version__ = "0.2.0"
+try:
+    __version__ = version("packerscope")
+except PackageNotFoundError:
+    __version__ = "0.2.0"
 __author__ = "Salman Mallah"
 __all__ = [
     "AnalysisReport",

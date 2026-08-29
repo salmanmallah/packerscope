@@ -13,7 +13,6 @@ environment variable binding and validation.
 
 from __future__ import annotations
 
-import os
 from pathlib import Path
 from typing import Any
 
@@ -93,6 +92,9 @@ class DetectorConfig(BaseModel):
     heuristic: bool = Field(default=True, description="Enable heuristic engine")
 
 
+_PACKAGE_ROOT = Path(__file__).resolve().parent
+
+
 class Config(BaseSettings):
     """PackerScope main configuration.
 
@@ -115,11 +117,11 @@ class Config(BaseSettings):
 
     # --- Directory Paths ---
     signatures_dir: Path = Field(
-        default=Path("packerscope/signatures"),
+        default_factory=lambda: _PACKAGE_ROOT / "signatures",
         description="Directory containing signature databases",
     )
     yara_rules_dir: Path = Field(
-        default=Path("packerscope/signatures/yara_rules"),
+        default_factory=lambda: _PACKAGE_ROOT / "signatures" / "yara_rules",
         description="Directory containing YARA rule files",
     )
     output_dir: Path = Field(
@@ -127,7 +129,7 @@ class Config(BaseSettings):
         description="Default output directory for reports and unpacked files",
     )
     plugins_dir: Path = Field(
-        default=Path("plugins"),
+        default_factory=lambda: _PACKAGE_ROOT / "plugins",
         description="Directory for external plugins",
     )
 
@@ -143,6 +145,10 @@ class Config(BaseSettings):
     max_workers: int = Field(
         default=4,
         description="Maximum concurrent workers for batch processing",
+    )
+    unpack_timeout: int = Field(
+        default=60,
+        description="Timeout in seconds for unpacking processes",
     )
 
     # --- Feature Toggles ---
@@ -236,7 +242,7 @@ class Config(BaseSettings):
         if not yaml_path.exists():
             raise FileNotFoundError(f"Configuration file not found: {yaml_path}")
 
-        with open(yaml_path, "r", encoding="utf-8") as f:
+        with open(yaml_path, encoding="utf-8") as f:
             yaml_data = yaml.safe_load(f) or {}
 
         # Merge: overrides take precedence over YAML

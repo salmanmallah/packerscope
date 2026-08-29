@@ -29,15 +29,13 @@ from pathlib import Path
 from typing import Any
 
 from packerscope.core.enums import (
-    ConfidenceLevel,
-    EntropyClass,
     PackerType,
 )
 from packerscope.core.models import (
     AnalysisReport,
     DetectionResult,
-    EntryPointAnalysis,
     EntropyResult,
+    EntryPointAnalysis,
     FileMetadata,
     ImportAnalysis,
     PackerVerdict,

@@ -10,7 +10,6 @@ from __future__ import annotations
 
 import importlib
 import importlib.metadata
-import sys
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -125,11 +124,11 @@ class PluginManager:
 
         det_config = self._config.detectors if self._config else None
 
-        for DetectorClass in ALL_DETECTORS:
+        for detector_cls in ALL_DETECTORS:
             try:
                 # Check config enable/disable
                 if det_config:
-                    attr_name = DetectorClass.name if hasattr(DetectorClass, "name") else ""
+                    attr_name = detector_cls.name if hasattr(detector_cls, "name") else ""
                     # Map detector names to config attributes
                     config_map = {
                         "entropy": "entropy",
@@ -142,26 +141,29 @@ class PluginManager:
                         "heuristic": "heuristic",
                     }
                     config_key = config_map.get(attr_name, "")
-                    if config_key and hasattr(det_config, config_key):
-                        if not getattr(det_config, config_key):
-                            continue
+                    if (
+                        config_key
+                        and hasattr(det_config, config_key)
+                        and not getattr(det_config, config_key)
+                    ):
+                        continue
 
                 # Instantiate with appropriate arguments
-                if DetectorClass.__name__ == "SignatureDetector":
+                if detector_cls.__name__ == "SignatureDetector":
                     sig_dir = self._config.signatures_dir if self._config else None
-                    instance = DetectorClass(signatures_dir=sig_dir)
-                elif DetectorClass.__name__ == "YARADetector":
+                    instance = detector_cls(signatures_dir=sig_dir)
+                elif detector_cls.__name__ == "YARADetector":
                     rules_dir = self._config.yara_rules_dir if self._config else None
-                    instance = DetectorClass(rules_dirs=[rules_dir] if rules_dir else [])
-                elif DetectorClass.__name__ == "HeuristicDetector":
+                    instance = detector_cls(rules_dirs=[rules_dir] if rules_dir else [])
+                elif detector_cls.__name__ == "HeuristicDetector":
                     weights = self._config.heuristic_weights if self._config else None
-                    instance = DetectorClass(weights=weights)
+                    instance = detector_cls(weights=weights)
                 else:
-                    instance = DetectorClass()
+                    instance = detector_cls()
 
                 self.register_detector(instance)
             except Exception as e:
-                logger.error("detector_init_error", detector=DetectorClass.__name__, error=str(e))
+                logger.error("detector_init_error", detector=detector_cls.__name__, error=str(e))
 
     def _register_builtin_unpackers(self) -> None:
         """Register all built-in unpacker modules."""

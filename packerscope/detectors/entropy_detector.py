@@ -11,7 +11,7 @@ from __future__ import annotations
 import time
 from typing import TYPE_CHECKING
 
-from packerscope.core.enums import DetectionMethod, EntropyClass, PackerType
+from packerscope.core.enums import DetectionMethod, EntropyClass
 from packerscope.core.interfaces import BaseDetector
 from packerscope.core.models import (
     DetectionResult,
@@ -135,11 +135,11 @@ class EntropyDetector(BaseDetector):
 
         # Count high-entropy sections (excluding .rsrc which naturally contains compressed data)
         high_sections = [
-            s for s in section_entropies 
+            s for s in section_entropies
             if s.entropy >= _HIGH_SECTION_ENTROPY and ".rsrc" not in s.name.lower()
         ]
         very_high = [
-            s for s in section_entropies 
+            s for s in section_entropies
             if s.entropy >= _VERY_HIGH_SECTION_ENTROPY and ".rsrc" not in s.name.lower()
         ]
 

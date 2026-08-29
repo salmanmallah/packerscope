@@ -19,7 +19,6 @@ import logging
 import sys
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
-from typing import Any
 
 import structlog
 
@@ -59,7 +58,7 @@ def setup_logging(
     Raises:
         ValueError: If *level* is not a recognised logging level name.
     """
-    global _LOGGING_CONFIGURED  # noqa: PLW0603
+    global _LOGGING_CONFIGURED
 
     numeric_level = getattr(logging, level.upper(), None)
     if not isinstance(numeric_level, int):
@@ -104,7 +103,6 @@ def setup_logging(
         renderer: structlog.types.Processor = structlog.processors.JSONRenderer()
     else:
         try:
-            from rich.console import Console  # noqa: F811
             from rich.traceback import install as _install_rich_tb
 
             _install_rich_tb(show_locals=False, width=120)
