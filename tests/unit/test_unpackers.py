@@ -110,4 +110,6 @@ class TestUnpackers:
         with PEContext(sample) as ctx:
             result = unpacker.unpack(ctx, output)
             assert not result.success
-            assert "backend" in result.error_message.lower() or "not" in result.error_message.lower()
+            assert (
+                "backend" in result.error_message.lower() or "not" in result.error_message.lower()
+            )

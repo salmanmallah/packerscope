@@ -69,8 +69,7 @@ class HeuristicDetector(BaseDetector):
         """
         if weights is not None:
             self._weights = {
-                field: getattr(weights, field)
-                for field in weights.__class__.model_fields
+                field: getattr(weights, field) for field in weights.__class__.model_fields
             }
             self._max_score = weights.max_score
         else:
@@ -208,14 +207,13 @@ class HeuristicDetector(BaseDetector):
 
         # Check for multiple high-entropy sections
         high_sections = [
-            se for se in ctx.entropy.section_entropies
+            se
+            for se in ctx.entropy.section_entropies
             if se.entropy_class in (EntropyClass.HIGH, EntropyClass.VERY_HIGH)
         ]
         if len(high_sections) > 1:
             score += 5  # Bonus for multiple high-entropy sections
-            reasons.append(
-                f"{len(high_sections)} sections with high entropy"
-            )
+            reasons.append(f"{len(high_sections)} sections with high entropy")
 
         return score, reasons
 
@@ -236,16 +234,16 @@ class HeuristicDetector(BaseDetector):
             score += weight
             packer = section_result.packer_hint
             votes[packer] = votes.get(packer, 0) + weight
-            reasons.append(
-                f"Known packer section names detected: {packer.value}"
-            )
+            reasons.append(f"Known packer section names detected: {packer.value}")
         elif section_result.is_packed:
             weight = self._weights.get("suspicious_section_names", 20)
             score += weight
             reasons.append("Suspicious section names detected")
 
         # Check for blank/null section names
-        blank_sections = [s for s in ctx.sections if not s.name.strip() or s.name.strip("\x00") == ""]
+        blank_sections = [
+            s for s in ctx.sections if not s.name.strip() or s.name.strip("\x00") == ""
+        ]
         if blank_sections:
             score += 5
             reasons.append(f"{len(blank_sections)} sections with blank names")
@@ -273,10 +271,7 @@ class HeuristicDetector(BaseDetector):
 
         if ctx.imports.has_dynamic_loading:
             score += 10
-            reasons.append(
-                "Dynamic loading pattern detected "
-                "(LoadLibrary + GetProcAddress only)"
-            )
+            reasons.append("Dynamic loading pattern detected (LoadLibrary + GetProcAddress only)")
 
         if ctx.imports.suspicious_apis:
             score += min(len(ctx.imports.suspicious_apis) * 2, 10)
@@ -300,8 +295,7 @@ class HeuristicDetector(BaseDetector):
             weight = self._weights.get("rwx_sections", 10)
             score += weight
             reasons.append(
-                f"{len(rwx)} section(s) with RWX permissions: "
-                f"{', '.join(s.name for s in rwx)}"
+                f"{len(rwx)} section(s) with RWX permissions: {', '.join(s.name for s in rwx)}"
             )
         return score, reasons
 
@@ -318,8 +312,7 @@ class HeuristicDetector(BaseDetector):
             best = max(ctx.signature_matches, key=lambda m: m.confidence)
             score += weight * best.confidence
             reasons.append(
-                f"Signature match: {best.signature_name} "
-                f"(confidence: {best.confidence:.0%})"
+                f"Signature match: {best.signature_name} (confidence: {best.confidence:.0%})"
             )
             # Vote for the packer from signature
             sig_result = ctx.get_detection("signatures")
@@ -340,10 +333,7 @@ class HeuristicDetector(BaseDetector):
             weight = self._weights.get("yara_match", 25)
             best = max(ctx.yara_matches, key=lambda m: m.confidence)
             score += weight * best.confidence
-            reasons.append(
-                f"YARA rule match: {best.rule_name} "
-                f"(confidence: {best.confidence:.0%})"
-            )
+            reasons.append(f"YARA rule match: {best.rule_name} (confidence: {best.confidence:.0%})")
             yara_result = ctx.get_detection("yara")
             if yara_result and yara_result.packer_hint != PackerType.NONE:
                 packer = yara_result.packer_hint
@@ -391,9 +381,7 @@ class HeuristicDetector(BaseDetector):
         if not ctx.entrypoint.is_in_code_section:
             weight = self._weights.get("ep_outside_text", 10)
             score += weight
-            reasons.append(
-                f"Entry point in non-code section: {ctx.entrypoint.entry_point_section}"
-            )
+            reasons.append(f"Entry point in non-code section: {ctx.entrypoint.entry_point_section}")
         return score, reasons
 
     def _check_overlay(
@@ -512,8 +500,7 @@ class HeuristicDetector(BaseDetector):
 
         # Filter out NONE and UNKNOWN
         valid_votes = {
-            k: v for k, v in votes.items()
-            if k not in (PackerType.NONE, PackerType.UNKNOWN)
+            k: v for k, v in votes.items() if k not in (PackerType.NONE, PackerType.UNKNOWN)
         }
 
         if not valid_votes:

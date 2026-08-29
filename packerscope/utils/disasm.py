@@ -76,8 +76,20 @@ _JUMP_MNEMONICS: frozenset[str] = frozenset(
 
 # Known stub signatures: ``(pattern_name, mnemonic_sequence)``
 _STUB_PATTERNS: list[tuple[str, tuple[str, ...]]] = [
-    ("upx", ("pusha", "mov",)),
-    ("upx_alt", ("pushad", "mov",)),
+    (
+        "upx",
+        (
+            "pusha",
+            "mov",
+        ),
+    ),
+    (
+        "upx_alt",
+        (
+            "pushad",
+            "mov",
+        ),
+    ),
     ("aspack", ("pusha",)),
     ("aspack_alt", ("pushad",)),
     ("fsg", ("jmp",)),

@@ -226,9 +226,7 @@ class BaseReporter(ABC):
         """
         ...
 
-    def generate_batch(
-        self, reports: list[AnalysisReport], output_path: Path
-    ) -> Path:
+    def generate_batch(self, reports: list[AnalysisReport], output_path: Path) -> Path:
         """Generate a batch report from multiple analysis results.
 
         Default implementation generates individual reports. Override

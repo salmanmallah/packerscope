@@ -127,10 +127,12 @@ class GenericStaticUnpacker(BaseUnpacker):
     def _decompressors():
         """Yield (name, function) pairs for common decompression algorithms."""
         import zlib
+
         yield "zlib", zlib.decompress
 
         try:
             import lzma
+
             yield "lzma", lzma.decompress
         except ImportError:
             pass

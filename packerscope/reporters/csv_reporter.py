@@ -13,11 +13,23 @@ from packerscope.utils.logger import get_logger
 logger = get_logger(__name__)
 
 _CSV_HEADERS = [
-    "file_name", "file_path", "md5", "sha256", "imphash",
-    "is_packed", "packer", "confidence", "confidence_level",
-    "whole_file_entropy", "section_count", "import_count",
-    "has_overlay", "has_tls", "compile_timestamp",
-    "unpack_success", "unpack_strategy",
+    "file_name",
+    "file_path",
+    "md5",
+    "sha256",
+    "imphash",
+    "is_packed",
+    "packer",
+    "confidence",
+    "confidence_level",
+    "whole_file_entropy",
+    "section_count",
+    "import_count",
+    "has_overlay",
+    "has_tls",
+    "compile_timestamp",
+    "unpack_success",
+    "unpack_strategy",
     "analysis_duration_seconds",
 ]
 
@@ -58,24 +70,16 @@ class CSVReporter(BaseReporter):
             "packer": report.verdict.packer.value,
             "confidence": round(report.verdict.confidence, 4),
             "confidence_level": report.verdict.confidence_level.value,
-            "whole_file_entropy": (
-                report.entropy.whole_file_entropy if report.entropy else ""
-            ),
+            "whole_file_entropy": (report.entropy.whole_file_entropy if report.entropy else ""),
             "section_count": len(report.sections),
             "import_count": report.imports.total_imports if report.imports else "",
-            "has_overlay": (
-                report.structure.has_overlay if report.structure else ""
-            ),
+            "has_overlay": (report.structure.has_overlay if report.structure else ""),
             "has_tls": report.structure.has_tls if report.structure else "",
             "compile_timestamp": (
                 str(report.structure.compile_timestamp) if report.structure else ""
             ),
-            "unpack_success": (
-                report.unpack_result.success if report.unpack_result else ""
-            ),
-            "unpack_strategy": (
-                report.unpack_result.strategy_used if report.unpack_result else ""
-            ),
+            "unpack_success": (report.unpack_result.success if report.unpack_result else ""),
+            "unpack_strategy": (report.unpack_result.strategy_used if report.unpack_result else ""),
             "analysis_duration_seconds": round(report.analysis_duration_seconds, 3),
         }
 

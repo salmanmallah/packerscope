@@ -88,9 +88,7 @@ class SectionDetector(BaseDetector):
                 ptype = _PACKER_NAME_MAP.get(packer_name, PackerType.GENERIC_PACKED)
                 packer_scores[ptype] = packer_scores.get(ptype, 0) + len(matched) * 10
                 is_packed = True
-                reasons.append(
-                    f"Packer section name(s) [{packer_name}]: {', '.join(matched)}"
-                )
+                reasons.append(f"Packer section name(s) [{packer_name}]: {', '.join(matched)}")
 
         # --- RWX sections ---
         rwx_sections = [s for s in sections if s.is_rwx]
@@ -108,10 +106,7 @@ class SectionDetector(BaseDetector):
             reasons.append(f"{len(blank)} section(s) with blank/null names")
 
         # --- Abnormal size ratios (virtual >> raw) ---
-        abnormal_ratio = [
-            s for s in sections
-            if s.raw_size > 0 and s.size_ratio > 10.0
-        ]
+        abnormal_ratio = [s for s in sections if s.raw_size > 0 and s.size_ratio > 10.0]
         if abnormal_ratio:
             is_packed = True
             confidence = max(confidence, 0.45)
@@ -122,10 +117,7 @@ class SectionDetector(BaseDetector):
                 )
 
         # --- Sections with raw_size = 0 but large virtual_size ---
-        hollow = [
-            s for s in sections
-            if s.raw_size == 0 and s.virtual_size > 4096
-        ]
+        hollow = [s for s in sections if s.raw_size == 0 and s.virtual_size > 4096]
         if hollow:
             confidence = max(confidence, 0.35)
             reasons.append(

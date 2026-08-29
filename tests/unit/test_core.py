@@ -30,6 +30,7 @@ from packerscope.core.models import (
 
 # ── Enum Tests ─────────────────────────────────────────────────────────────
 
+
 class TestPackerType:
     """Tests for PackerType enum."""
 
@@ -158,8 +159,12 @@ class TestFileMetadata:
     def test_short_hash_rejected(self):
         with pytest.raises(ValueError):
             FileMetadata(
-                md5="abc", sha1="def", sha256="ghi",
-                file_size=100, file_name="test.exe", file_path="/tmp/test.exe",
+                md5="abc",
+                sha1="def",
+                sha256="ghi",
+                file_size=100,
+                file_name="test.exe",
+                file_path="/tmp/test.exe",
             )
 
 
@@ -171,8 +176,12 @@ class TestAnalysisReport:
             file_name="test.exe",
             file_path="/tmp/test.exe",
             metadata=FileMetadata(
-                md5=_MD5, sha1=_SHA1, sha256=_SHA256,
-                file_size=100, file_name="test.exe", file_path="/tmp/test.exe",
+                md5=_MD5,
+                sha1=_SHA1,
+                sha256=_SHA256,
+                file_size=100,
+                file_name="test.exe",
+                file_path="/tmp/test.exe",
             ),
             verdict=PackerVerdict(is_packed=False),
         )

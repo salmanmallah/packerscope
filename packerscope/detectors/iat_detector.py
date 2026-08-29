@@ -24,8 +24,13 @@ logger = get_logger(__name__)
 # Dynamic-loading stub pattern: only these APIs = almost certainly packed
 _DYNAMIC_LOADING_DLLS = {"kernel32.dll", "ntdll.dll"}
 _DYNAMIC_LOADING_APIS = {
-    "LoadLibraryA", "LoadLibraryW", "LoadLibraryExA", "LoadLibraryExW",
-    "GetProcAddress", "GetModuleHandleA", "GetModuleHandleW",
+    "LoadLibraryA",
+    "LoadLibraryW",
+    "LoadLibraryExA",
+    "LoadLibraryExW",
+    "GetProcAddress",
+    "GetModuleHandleA",
+    "GetModuleHandleW",
 }
 
 _NORMAL_IMPORT_RANGE = (30, 300)  # typical range for normal PE imports
@@ -133,7 +138,7 @@ class IATDetector(BaseDetector):
             reasons.append(
                 f"{len(suspicious_found)} suspicious API(s): "
                 f"{', '.join(suspicious_found[:8])}"
-                + (f" (+{len(suspicious_found)-8} more)" if len(suspicious_found) > 8 else "")
+                + (f" (+{len(suspicious_found) - 8} more)" if len(suspicious_found) > 8 else "")
             )
 
         # Very few DLLs
@@ -142,7 +147,9 @@ class IATDetector(BaseDetector):
             reasons.append(f"Only {dll_count} DLL(s) imported")
 
         if not reasons:
-            reasons.append(f"Import table appears normal ({total_imports} imports from {dll_count} DLLs)")
+            reasons.append(
+                f"Import table appears normal ({total_imports} imports from {dll_count} DLLs)"
+            )
 
         # Build and store ImportAnalysis
         ctx.imports = ImportAnalysis(

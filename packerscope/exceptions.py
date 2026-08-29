@@ -202,6 +202,5 @@ class FileTooLargeError(PackerScopeError):
         file_mb = self.file_size / (1024 * 1024)
         max_mb = self.max_size / (1024 * 1024)
         return (
-            f"File too large: {file_mb:.2f} MiB exceeds limit of {max_mb:.2f} MiB. "
-            f"{self.message}"
+            f"File too large: {file_mb:.2f} MiB exceeds limit of {max_mb:.2f} MiB. {self.message}"
         )

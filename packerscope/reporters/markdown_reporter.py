@@ -81,7 +81,9 @@ class MarkdownReporter(BaseReporter):
             lines.append("")
             lines.append("| Metric | Value |")
             lines.append("|---|---|")
-            lines.append(f"| Whole file | {e.whole_file_entropy:.4f} ({e.whole_file_class.value}) |")
+            lines.append(
+                f"| Whole file | {e.whole_file_entropy:.4f} ({e.whole_file_class.value}) |"
+            )
             lines.append(f"| Max section | {e.max_section_entropy:.4f} |")
             lines.append(f"| Min section | {e.min_section_entropy:.4f} |")
             lines.append(f"| Mean section | {e.mean_section_entropy:.4f} |")
@@ -93,7 +95,9 @@ class MarkdownReporter(BaseReporter):
                 lines.append("| Section | Entropy | Class | Size |")
                 lines.append("|---|---|---|---|")
                 for se in e.section_entropies:
-                    lines.append(f"| `{se.name}` | {se.entropy:.4f} | {se.entropy_class.value} | {se.size:,} |")
+                    lines.append(
+                        f"| `{se.name}` | {se.entropy:.4f} | {se.entropy_class.value} | {se.size:,} |"
+                    )
                 lines.append("")
 
         # Sections
@@ -141,7 +145,9 @@ class MarkdownReporter(BaseReporter):
             lines.append("## ✍️ Signature Matches")
             lines.append("")
             for sig in report.signatures:
-                lines.append(f"- **{sig.signature_name}** (confidence: {sig.confidence:.0%}, offset: {sig.offset:#x})")
+                lines.append(
+                    f"- **{sig.signature_name}** (confidence: {sig.confidence:.0%}, offset: {sig.offset:#x})"
+                )
             lines.append("")
 
         # YARA matches

@@ -74,13 +74,15 @@ class EntropyDetector(BaseDetector):
                 sec_ent = calculate_entropy(sec_data) if sec_data else 0.0
                 sec_class = classify_entropy(sec_ent)
 
-                section_entropies.append(SectionEntropy(
-                    name=sec.name,
-                    entropy=round(sec_ent, 4),
-                    entropy_class=sec_class,
-                    offset=sec.raw_offset,
-                    size=sec.raw_size,
-                ))
+                section_entropies.append(
+                    SectionEntropy(
+                        name=sec.name,
+                        entropy=round(sec_ent, 4),
+                        entropy_class=sec_class,
+                        offset=sec.raw_offset,
+                        size=sec.raw_size,
+                    )
+                )
 
                 # Build SectionInfo for context
                 chars = sec.characteristics
@@ -88,21 +90,23 @@ class EntropyDetector(BaseDetector):
                 is_write = bool(chars & 0x80000000)
                 is_read = bool(chars & 0x40000000)
                 raw = sec.raw_size if sec.raw_size > 0 else 1
-                section_infos.append(SectionInfo(
-                    name=sec.name,
-                    virtual_address=sec.virtual_address,
-                    virtual_size=sec.virtual_size,
-                    raw_size=sec.raw_size,
-                    raw_offset=sec.raw_offset,
-                    entropy=round(sec_ent, 4),
-                    entropy_class=sec_class,
-                    is_executable=is_exec,
-                    is_writable=is_write,
-                    is_readable=is_read,
-                    is_rwx=is_exec and is_write and is_read,
-                    flags=self._build_flags(chars),
-                    size_ratio=round(sec.virtual_size / raw, 2),
-                ))
+                section_infos.append(
+                    SectionInfo(
+                        name=sec.name,
+                        virtual_address=sec.virtual_address,
+                        virtual_size=sec.virtual_size,
+                        raw_size=sec.raw_size,
+                        raw_offset=sec.raw_offset,
+                        entropy=round(sec_ent, 4),
+                        entropy_class=sec_class,
+                        is_executable=is_exec,
+                        is_writable=is_write,
+                        is_readable=is_read,
+                        is_rwx=is_exec and is_write and is_read,
+                        flags=self._build_flags(chars),
+                        size_ratio=round(sec.virtual_size / raw, 2),
+                    )
+                )
 
         # Store sections in context
         ctx.sections = section_infos
@@ -135,11 +139,13 @@ class EntropyDetector(BaseDetector):
 
         # Count high-entropy sections (excluding .rsrc which naturally contains compressed data)
         high_sections = [
-            s for s in section_entropies
+            s
+            for s in section_entropies
             if s.entropy >= _HIGH_SECTION_ENTROPY and ".rsrc" not in s.name.lower()
         ]
         very_high = [
-            s for s in section_entropies
+            s
+            for s in section_entropies
             if s.entropy >= _VERY_HIGH_SECTION_ENTROPY and ".rsrc" not in s.name.lower()
         ]
 
@@ -158,9 +164,7 @@ class EntropyDetector(BaseDetector):
         spread = max_ent - min_ent
         if spread > _ENTROPY_SPREAD_THRESHOLD and max_ent > _HIGH_SECTION_ENTROPY:
             confidence = max(confidence, 0.55)
-            reasons.append(
-                f"Large entropy spread between sections: {min_ent:.2f} — {max_ent:.2f}"
-            )
+            reasons.append(f"Large entropy spread between sections: {min_ent:.2f} — {max_ent:.2f}")
 
         if not reasons:
             reasons.append(f"Normal entropy levels (file: {whole_entropy:.4f})")

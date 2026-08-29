@@ -17,8 +17,10 @@ from packerscope.signatures.peid_parser import PEiDParser
 
 # ── Fixtures ───────────────────────────────────────────────────────────────
 
+
 class MockSection:
     """Mock PE section for testing."""
+
     def __init__(self, name, vsize, rsize, entropy=5.0, chars=0x60000020):
         self.name = name
         self.virtual_address = 0x1000
@@ -31,6 +33,7 @@ class MockSection:
 
 class MockImport:
     """Mock import entry."""
+
     def __init__(self, dll_name, functions):
         self.dll_name = dll_name
         self.functions = functions
@@ -38,6 +41,7 @@ class MockImport:
 
 class MockPE:
     """Mock PEParser for testing detectors."""
+
     def __init__(self):
         self.is_valid = True
         self.is_64bit = False
@@ -55,7 +59,7 @@ class MockPE:
         return self._imports
 
     def entry_point_data(self, size=256):
-        return b"\x60\xE8\x00\x00\x00\x00" + b"\x00" * (size - 6)
+        return b"\x60\xe8\x00\x00\x00\x00" + b"\x00" * (size - 6)
 
 
 def make_ctx(sections=None, imports=None, raw_data=None):
@@ -86,6 +90,7 @@ def make_ctx(sections=None, imports=None, raw_data=None):
 
 # ── Entropy Detector Tests ────────────────────────────────────────────────
 
+
 class TestEntropyDetector:
     """Tests for EntropyDetector."""
 
@@ -102,6 +107,7 @@ class TestEntropyDetector:
 
     def test_high_entropy_packed(self):
         import os
+
         high_entropy_data = os.urandom(4096)
         ctx = make_ctx(
             sections=[MockSection(".text", 4096, 4096)],
@@ -126,6 +132,7 @@ class TestEntropyDetector:
 
 # ── Section Detector Tests ─────────────────────────────────────────────────
 
+
 class TestSectionDetector:
     """Tests for SectionDetector."""
 
@@ -133,11 +140,19 @@ class TestSectionDetector:
         ctx = make_ctx()
         ctx.sections = [
             SectionInfo(
-                name=".text", virtual_address=0x1000, virtual_size=4096,
-                raw_size=4096, raw_offset=0x200, entropy=5.0,
+                name=".text",
+                virtual_address=0x1000,
+                virtual_size=4096,
+                raw_size=4096,
+                raw_offset=0x200,
+                entropy=5.0,
                 entropy_class=EntropyClass.MEDIUM,
-                is_executable=True, is_writable=False, is_readable=True,
-                is_rwx=False, flags=[], size_ratio=1.0,
+                is_executable=True,
+                is_writable=False,
+                is_readable=True,
+                is_rwx=False,
+                flags=[],
+                size_ratio=1.0,
             ),
         ]
         detector = SectionDetector()
@@ -148,18 +163,34 @@ class TestSectionDetector:
         ctx = make_ctx()
         ctx.sections = [
             SectionInfo(
-                name="UPX0", virtual_address=0x1000, virtual_size=65536,
-                raw_size=0, raw_offset=0x200, entropy=0.0,
+                name="UPX0",
+                virtual_address=0x1000,
+                virtual_size=65536,
+                raw_size=0,
+                raw_offset=0x200,
+                entropy=0.0,
                 entropy_class=EntropyClass.LOW,
-                is_executable=True, is_writable=True, is_readable=True,
-                is_rwx=True, flags=[], size_ratio=0.0,
+                is_executable=True,
+                is_writable=True,
+                is_readable=True,
+                is_rwx=True,
+                flags=[],
+                size_ratio=0.0,
             ),
             SectionInfo(
-                name="UPX1", virtual_address=0x11000, virtual_size=4096,
-                raw_size=4096, raw_offset=0x400, entropy=7.5,
+                name="UPX1",
+                virtual_address=0x11000,
+                virtual_size=4096,
+                raw_size=4096,
+                raw_offset=0x400,
+                entropy=7.5,
                 entropy_class=EntropyClass.VERY_HIGH,
-                is_executable=True, is_writable=False, is_readable=True,
-                is_rwx=False, flags=[], size_ratio=1.0,
+                is_executable=True,
+                is_writable=False,
+                is_readable=True,
+                is_rwx=False,
+                flags=[],
+                size_ratio=1.0,
             ),
         ]
         detector = SectionDetector()
@@ -169,6 +200,7 @@ class TestSectionDetector:
 
 
 # ── IAT Detector Tests ────────────────────────────────────────────────────
+
 
 class TestIATDetector:
     """Tests for IATDetector."""
@@ -182,19 +214,23 @@ class TestIATDetector:
 
     def test_normal_imports_not_packed(self):
         funcs = [f"func_{i}" for i in range(100)]
-        ctx = make_ctx(imports=[
-            MockImport("kernel32.dll", funcs[:30]),
-            MockImport("user32.dll", funcs[30:60]),
-            MockImport("advapi32.dll", funcs[60:]),
-        ])
+        ctx = make_ctx(
+            imports=[
+                MockImport("kernel32.dll", funcs[:30]),
+                MockImport("user32.dll", funcs[30:60]),
+                MockImport("advapi32.dll", funcs[60:]),
+            ]
+        )
         detector = IATDetector()
         result = detector.detect(ctx)
         assert not result.is_packed
 
     def test_tiny_iat_suspicious(self):
-        ctx = make_ctx(imports=[
-            MockImport("kernel32.dll", ["LoadLibraryA", "GetProcAddress"]),
-        ])
+        ctx = make_ctx(
+            imports=[
+                MockImport("kernel32.dll", ["LoadLibraryA", "GetProcAddress"]),
+            ]
+        )
         detector = IATDetector()
         result = detector.detect(ctx)
         assert result.is_packed
@@ -202,11 +238,14 @@ class TestIATDetector:
 
 # ── PEiD Parser Tests ─────────────────────────────────────────────────────
 
+
 class TestPEiDParser:
     """Tests for PEiD signature database parser."""
 
     def test_load_existing_database(self):
-        db_path = Path(__file__).parent.parent.parent / "packerscope" / "signatures" / "peid_userdb.txt"
+        db_path = (
+            Path(__file__).parent.parent.parent / "packerscope" / "signatures" / "peid_userdb.txt"
+        )
         if not db_path.exists():
             pytest.skip("PEiD database not found")
         parser = PEiDParser(db_path)
@@ -233,6 +272,7 @@ class TestPEiDParser:
 
 # ── Heuristic Detector Tests ──────────────────────────────────────────────
 
+
 class TestHeuristicDetector:
     """Tests for HeuristicDetector."""
 
@@ -253,8 +293,20 @@ class TestHeuristicDetector:
             whole_file_entropy=7.5,
             whole_file_class=EntropyClass.VERY_HIGH,
             section_entropies=[
-                SectionEntropy(name=".text", entropy=7.5, entropy_class=EntropyClass.VERY_HIGH, offset=0, size=4096),
-                SectionEntropy(name=".data", entropy=7.6, entropy_class=EntropyClass.VERY_HIGH, offset=4096, size=4096),
+                SectionEntropy(
+                    name=".text",
+                    entropy=7.5,
+                    entropy_class=EntropyClass.VERY_HIGH,
+                    offset=0,
+                    size=4096,
+                ),
+                SectionEntropy(
+                    name=".data",
+                    entropy=7.6,
+                    entropy_class=EntropyClass.VERY_HIGH,
+                    offset=4096,
+                    size=4096,
+                ),
             ],
             max_section_entropy=7.6,
             min_section_entropy=7.5,

@@ -265,7 +265,7 @@ class PEParser:
         offset = self.entry_point_offset
         if offset <= 0 or offset >= len(self._raw_data):
             return b""
-        return self._raw_data[offset: offset + size]
+        return self._raw_data[offset : offset + size]
 
     # ------------------------------------------------------------------
     # Sections

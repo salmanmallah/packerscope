@@ -14,25 +14,26 @@ from packerscope.core.models import AnalysisReport
 def sample_pe_file(tmp_path: Path) -> Path:
     """Create a minimal PE file fixture."""
     pe_data = (
-        b"MZ" + b"\x00" * 58 +
-        b"\x40\x00\x00\x00" +
-        b"\x00" * 4 +
-        b"PE\x00\x00" +
-        b"\x4C\x01" +
-        b"\x01\x00" +
-        b"\x00" * 12 +
-        b"\xE0\x00" +
-        b"\x02\x01" +
-        b"\x0B\x01" +
-        b"\x00" * 224 +
-        b".text\x00\x00\x00" +
-        b"\x00\x10\x00\x00" +
-        b"\x00\x10\x00\x00" +
-        b"\x00\x10\x00\x00" +
-        b"\x00\x02\x00\x00" +
-        b"\x00" * 12 +
-        b"\x20\x00\x00\x60" +
-        b"\x00" * 4096
+        b"MZ"
+        + b"\x00" * 58
+        + b"\x40\x00\x00\x00"
+        + b"\x00" * 4
+        + b"PE\x00\x00"
+        + b"\x4c\x01"
+        + b"\x01\x00"
+        + b"\x00" * 12
+        + b"\xe0\x00"
+        + b"\x02\x01"
+        + b"\x0b\x01"
+        + b"\x00" * 224
+        + b".text\x00\x00\x00"
+        + b"\x00\x10\x00\x00"
+        + b"\x00\x10\x00\x00"
+        + b"\x00\x10\x00\x00"
+        + b"\x00\x02\x00\x00"
+        + b"\x00" * 12
+        + b"\x20\x00\x00\x60"
+        + b"\x00" * 4096
     )
     test_file = tmp_path / "sample.exe"
     test_file.write_bytes(pe_data)

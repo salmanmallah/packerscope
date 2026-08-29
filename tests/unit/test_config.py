@@ -65,9 +65,7 @@ class TestHeuristicWeights:
     def test_max_score_sum(self):
         w = HeuristicWeights()
         assert w.max_score > 0
-        assert w.max_score == sum(
-            getattr(w, f) for f in HeuristicWeights.model_fields
-        )
+        assert w.max_score == sum(getattr(w, f) for f in HeuristicWeights.model_fields)
 
 
 class TestDetectorConfig:

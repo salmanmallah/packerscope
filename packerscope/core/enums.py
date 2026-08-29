@@ -28,13 +28,12 @@ except ImportError:  # pragma: no cover (Python < 3.11 fallback)
         """Python 3.10 compatibility fallback for StrEnum."""
 
         @staticmethod
-        def _generate_next_value_(
-            name: str, start: int, count: int, last_values: list[str]
-        ) -> str:
+        def _generate_next_value_(name: str, start: int, count: int, last_values: list[str]) -> str:
             return name.lower()
 
         def __str__(self) -> str:
             return str(self.value)
+
 
 __all__ = [
     "ConfidenceLevel",
@@ -50,6 +49,7 @@ __all__ = [
 # ---------------------------------------------------------------------------
 # PackerType
 # ---------------------------------------------------------------------------
+
 
 class PackerType(StrEnum):
     """Known packer / protector families that PackerScope can identify.
@@ -128,6 +128,7 @@ class PackerType(StrEnum):
 # ConfidenceLevel
 # ---------------------------------------------------------------------------
 
+
 class ConfidenceLevel(StrEnum):
     """Qualitative confidence tiers derived from a ``[0.0, 1.0]`` score.
 
@@ -180,9 +181,7 @@ class ConfidenceLevel(StrEnum):
             <ConfidenceLevel.HIGH: 'high'>
         """
         if not 0.0 <= score <= 1.0:
-            raise ValueError(
-                f"Confidence score must be in [0.0, 1.0], got {score!r}"
-            )
+            raise ValueError(f"Confidence score must be in [0.0, 1.0], got {score!r}")
 
         if score == 0.0:
             return cls.NONE
@@ -198,6 +197,7 @@ class ConfidenceLevel(StrEnum):
 # ---------------------------------------------------------------------------
 # DetectionMethod
 # ---------------------------------------------------------------------------
+
 
 class DetectionMethod(StrEnum):
     """Algorithmic families used by individual detector plug-ins.
@@ -234,6 +234,7 @@ class DetectionMethod(StrEnum):
 # ---------------------------------------------------------------------------
 # EntropyClass
 # ---------------------------------------------------------------------------
+
 
 class EntropyClass(StrEnum):
     """Qualitative classification of Shannon entropy values.
@@ -285,9 +286,7 @@ class EntropyClass(StrEnum):
             <EntropyClass.VERY_HIGH: 'very_high'>
         """
         if not 0.0 <= entropy <= 8.0:
-            raise ValueError(
-                f"Shannon entropy must be in [0.0, 8.0], got {entropy!r}"
-            )
+            raise ValueError(f"Shannon entropy must be in [0.0, 8.0], got {entropy!r}")
 
         if entropy < 3.5:
             return cls.LOW
@@ -301,6 +300,7 @@ class EntropyClass(StrEnum):
 # ---------------------------------------------------------------------------
 # UnpackStrategy
 # ---------------------------------------------------------------------------
+
 
 class UnpackStrategy(StrEnum):
     """High-level strategies the unpacking pipeline can employ.
@@ -332,6 +332,7 @@ class UnpackStrategy(StrEnum):
 # ReportFormat
 # ---------------------------------------------------------------------------
 
+
 class ReportFormat(StrEnum):
     """Output formats supported by the reporting subsystem."""
 
@@ -351,6 +352,7 @@ class ReportFormat(StrEnum):
 # ---------------------------------------------------------------------------
 # LogLevel
 # ---------------------------------------------------------------------------
+
 
 class LogLevel(StrEnum):
     """Log severity levels aligned with Python's :mod:`logging` module.

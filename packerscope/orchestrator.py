@@ -197,11 +197,7 @@ class Orchestrator:
         if packer_votes:
             packer = max(packer_votes, key=packer_votes.get)  # type: ignore[arg-type]
 
-        avg_confidence = (
-            sum(contributing.values()) / len(contributing)
-            if contributing
-            else 0.0
-        )
+        avg_confidence = sum(contributing.values()) / len(contributing) if contributing else 0.0
 
         return PackerVerdict(
             is_packed=True,

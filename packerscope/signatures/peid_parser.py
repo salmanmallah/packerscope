@@ -111,17 +111,17 @@ class PEiDParser:
         logger.info("peid_signatures_loaded", count=len(self._signatures))
         return self._signatures
 
-    def _add_signature(
-        self, name: str, sig_str: str, ep_only: bool, line_num: int
-    ) -> None:
+    def _add_signature(self, name: str, sig_str: str, ep_only: bool, line_num: int) -> None:
         """Parse a hex signature string and add to the list."""
         pattern = self._parse_pattern(sig_str)
         if pattern:
-            self._signatures.append(PEiDSignature(
-                name=name,
-                pattern=pattern,
-                ep_only=ep_only,
-            ))
+            self._signatures.append(
+                PEiDSignature(
+                    name=name,
+                    pattern=pattern,
+                    ep_only=ep_only,
+                )
+            )
         else:
             logger.warning(
                 "peid_invalid_signature",

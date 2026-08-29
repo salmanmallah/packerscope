@@ -18,25 +18,26 @@ def mock_pe_file(tmp_path):
     # This is a tiny, valid-enough DOS header to satisfy pefile
     # MZ... \x00\x00\x00\x00\x00\x00\x00\x00... PE\0\0
     pe_data = (
-        b"MZ" + b"\x00" * 58 +
-        b"\x40\x00\x00\x00" +  # offset to PE
-        b"\x00" * 4 +
-        b"PE\x00\x00" +        # PE signature
-        b"\x4C\x01" +          # Machine (x86)
-        b"\x01\x00" +          # Number of sections
-        b"\x00" * 12 +
-        b"\xE0\x00" +          # Size of optional header
-        b"\x02\x01" +          # Characteristics
-        b"\x0B\x01" +          # Magic (PE32)
-        b"\x00" * 224 +        # Rest of optional header
-        b".text\x00\x00\x00" + # Section name
-        b"\x00\x10\x00\x00" +  # Virtual Size
-        b"\x00\x10\x00\x00" +  # Virtual Address
-        b"\x00\x10\x00\x00" +  # Size of raw data
-        b"\x00\x02\x00\x00" +  # Pointer to raw data
-        b"\x00" * 12 +
-        b"\x20\x00\x00\x60" +  # Characteristics (RX)
-        b"\x00" * 4096         # Section data (empty/0-entropy)
+        b"MZ"
+        + b"\x00" * 58
+        + b"\x40\x00\x00\x00"  # offset to PE
+        + b"\x00" * 4
+        + b"PE\x00\x00"  # PE signature
+        + b"\x4c\x01"  # Machine (x86)
+        + b"\x01\x00"  # Number of sections
+        + b"\x00" * 12
+        + b"\xe0\x00"  # Size of optional header
+        + b"\x02\x01"  # Characteristics
+        + b"\x0b\x01"  # Magic (PE32)
+        + b"\x00" * 224  # Rest of optional header
+        + b".text\x00\x00\x00"  # Section name
+        + b"\x00\x10\x00\x00"  # Virtual Size
+        + b"\x00\x10\x00\x00"  # Virtual Address
+        + b"\x00\x10\x00\x00"  # Size of raw data
+        + b"\x00\x02\x00\x00"  # Pointer to raw data
+        + b"\x00" * 12
+        + b"\x20\x00\x00\x60"  # Characteristics (RX)
+        + b"\x00" * 4096  # Section data (empty/0-entropy)
     )
     test_file = tmp_path / "dummy.exe"
     test_file.write_bytes(pe_data)

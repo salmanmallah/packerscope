@@ -147,9 +147,18 @@ DEFAULT_MAX_WORKERS: Final[int] = 4
 # Misc constants
 # ---------------------------------------------------------------------------
 
-SUPPORTED_EXTENSIONS: Final[frozenset[str]] = frozenset({
-    ".exe", ".dll", ".sys", ".scr", ".drv", ".ocx", ".cpl", ".efi",
-})
+SUPPORTED_EXTENSIONS: Final[frozenset[str]] = frozenset(
+    {
+        ".exe",
+        ".dll",
+        ".sys",
+        ".scr",
+        ".drv",
+        ".ocx",
+        ".cpl",
+        ".efi",
+    }
+)
 """File extensions treated as potential PE files."""
 
 PE_SIGNATURE: Final[bytes] = b"MZ"

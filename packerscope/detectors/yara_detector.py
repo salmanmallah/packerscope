@@ -44,6 +44,7 @@ def _yara_available() -> bool:
     """Check if yara-python is importable."""
     try:
         import yara  # noqa: F401
+
         return True
     except ImportError:
         return False
@@ -134,11 +135,13 @@ class YARADetector(BaseDetector):
                 for s in m.strings:
                     if hasattr(s, "instances"):
                         for inst in s.instances:
-                            strings_info.append({
-                                "identifier": s.identifier,
-                                "offset": inst.offset,
-                                "matched_data": inst.matched_data.hex()[:64],
-                            })
+                            strings_info.append(
+                                {
+                                    "identifier": s.identifier,
+                                    "offset": inst.offset,
+                                    "matched_data": inst.matched_data.hex()[:64],
+                                }
+                            )
                     else:
                         strings_info.append({"identifier": str(s)})
 

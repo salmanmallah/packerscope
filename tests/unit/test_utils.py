@@ -14,6 +14,7 @@ from packerscope.utils.hasher import FileHasher
 
 # ── Entropy Tests ──────────────────────────────────────────────────────────
 
+
 class TestCalculateEntropy:
     """Tests for Shannon entropy calculation."""
 
@@ -29,11 +30,11 @@ class TestCalculateEntropy:
         assert abs(ent - 8.0) < 0.01
 
     def test_repeated_byte_is_zero(self):
-        data = b"\xAA" * 1024
+        data = b"\xaa" * 1024
         assert calculate_entropy(data) == 0.0
 
     def test_two_values_equally_distributed(self):
-        data = b"\x00\xFF" * 512
+        data = b"\x00\xff" * 512
         ent = calculate_entropy(data)
         assert abs(ent - 1.0) < 0.01
 
@@ -73,6 +74,7 @@ class TestClassifyEntropy:
 
 
 # ── Hasher Tests ───────────────────────────────────────────────────────────
+
 
 class TestFileHasher:
     """Tests for hash computation."""

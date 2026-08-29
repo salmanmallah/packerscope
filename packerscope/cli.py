@@ -36,7 +36,9 @@ console = Console()
 @click.option("--json-log", is_flag=True, help="Output logs in JSON format")
 @click.option("--log-file", type=click.Path(), default=None, help="Log to file")
 @click.pass_context
-def main(ctx: click.Context, verbose: bool, debug: bool, json_log: bool, log_file: str | None) -> None:
+def main(
+    ctx: click.Context, verbose: bool, debug: bool, json_log: bool, log_file: str | None
+) -> None:
     """PackerScope — Automatic packer detection, classification & unpacking."""
     level = "DEBUG" if debug else ("INFO" if verbose else "WARNING")
     log_path = Path(log_file) if log_file else None
@@ -47,7 +49,13 @@ def main(ctx: click.Context, verbose: bool, debug: bool, json_log: bool, log_fil
 
 @main.command()
 @click.argument("target", type=click.Path(exists=True))
-@click.option("--format", "-f", "formats", default="json", help="Report formats (comma-separated: json,csv,md,html)")
+@click.option(
+    "--format",
+    "-f",
+    "formats",
+    default="json",
+    help="Report formats (comma-separated: json,csv,md,html)",
+)
 @click.option("--output", "-o", type=click.Path(), default=None, help="Output directory")
 @click.option("--no-unpack", is_flag=True, help="Skip unpacking step")
 @click.option("--no-verify", is_flag=True, help="Skip unpacking verification")
@@ -72,7 +80,13 @@ def scan(
 
     # Parse report formats
     from packerscope.core.enums import ReportFormat
-    fmt_map = {"json": ReportFormat.JSON, "csv": ReportFormat.CSV, "md": ReportFormat.MARKDOWN, "html": ReportFormat.HTML}
+
+    fmt_map = {
+        "json": ReportFormat.JSON,
+        "csv": ReportFormat.CSV,
+        "md": ReportFormat.MARKDOWN,
+        "html": ReportFormat.HTML,
+    }
     config.report_formats = [fmt_map[f.strip()] for f in formats.split(",") if f.strip() in fmt_map]
 
     target_path = Path(target)
@@ -106,7 +120,13 @@ def batch(
         config.output_dir = Path(output)
 
     from packerscope.core.enums import ReportFormat
-    fmt_map = {"json": ReportFormat.JSON, "csv": ReportFormat.CSV, "md": ReportFormat.MARKDOWN, "html": ReportFormat.HTML}
+
+    fmt_map = {
+        "json": ReportFormat.JSON,
+        "csv": ReportFormat.CSV,
+        "md": ReportFormat.MARKDOWN,
+        "html": ReportFormat.HTML,
+    }
     config.report_formats = [fmt_map[f.strip()] for f in formats.split(",") if f.strip() in fmt_map]
 
     dir_path = Path(directory)
@@ -178,12 +198,15 @@ def info(ctx: click.Context, file: str) -> None:
             sec_table.add_column("RSize", justify="right")
             sec_table.add_column("Entropy", justify="right")
             from packerscope.utils.entropy import calculate_entropy
+
             for sec in pe.sections:
                 data = sec.data if sec.data else b""
                 ent = calculate_entropy(data) if data else 0.0
                 sec_table.add_row(
-                    sec.name, f"{sec.virtual_size:,}",
-                    f"{sec.raw_size:,}", f"{ent:.4f}",
+                    sec.name,
+                    f"{sec.virtual_size:,}",
+                    f"{sec.raw_size:,}",
+                    f"{ent:.4f}",
                 )
             console.print(sec_table)
 
@@ -230,11 +253,13 @@ def _print_report(report) -> None:
     color = "red" if v.is_packed else "green"
     status = "PACKED" if v.is_packed else "NOT PACKED"
 
-    console.print(Panel(
-        Text.from_markup(f"[bold {color}]{status}[/bold {color}]"),
-        title=f"{report.file_name}",
-        subtitle=f"Confidence: {v.confidence:.1%} ({v.confidence_level.value})",
-    ))
+    console.print(
+        Panel(
+            Text.from_markup(f"[bold {color}]{status}[/bold {color}]"),
+            title=f"{report.file_name}",
+            subtitle=f"Confidence: {v.confidence:.1%} ({v.confidence_level.value})",
+        )
+    )
 
     if v.is_packed:
         console.print(f"  Packer: [yellow bold]{v.packer.value}[/yellow bold]")

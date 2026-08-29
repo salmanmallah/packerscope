@@ -197,6 +197,7 @@ class PluginManager:
         """Register built-in verifier."""
         try:
             from packerscope.verification.verifier import UnpackVerifier
+
             self.register_verifier(UnpackVerifier())
         except Exception as e:
             logger.error("verifier_init_error", error=str(e))
@@ -214,9 +215,7 @@ class PluginManager:
                 if py_file.name.startswith("_"):
                     continue
                 try:
-                    spec = importlib.util.spec_from_file_location(
-                        f"plugin_{py_file.stem}", py_file
-                    )
+                    spec = importlib.util.spec_from_file_location(f"plugin_{py_file.stem}", py_file)
                     if spec and spec.loader:
                         module = importlib.util.module_from_spec(spec)
                         spec.loader.exec_module(module)

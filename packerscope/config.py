@@ -52,20 +52,12 @@ class HeuristicWeights(BaseModel):
     signature_match: int = Field(default=30, description="Weight for signature match")
     yara_match: int = Field(default=25, description="Weight for YARA rule match")
     entry_point_stub: int = Field(default=15, description="Weight for EP stub detection")
-    ep_outside_text: int = Field(
-        default=10, description="Weight for EP outside .text section"
-    )
+    ep_outside_text: int = Field(default=10, description="Weight for EP outside .text section")
     large_overlay: int = Field(default=5, description="Weight for large overlay data")
     no_relocations: int = Field(default=5, description="Weight for missing relocations")
-    abnormal_alignment: int = Field(
-        default=5, description="Weight for abnormal section alignment"
-    )
-    compressed_resources: int = Field(
-        default=5, description="Weight for compressed resources"
-    )
-    missing_debug_info: int = Field(
-        default=3, description="Weight for missing debug information"
-    )
+    abnormal_alignment: int = Field(default=5, description="Weight for abnormal section alignment")
+    compressed_resources: int = Field(default=5, description="Weight for compressed resources")
+    missing_debug_info: int = Field(default=3, description="Weight for missing debug information")
     suspicious_timestamp: int = Field(
         default=3, description="Weight for suspicious compile timestamp"
     )
@@ -73,10 +65,7 @@ class HeuristicWeights(BaseModel):
     @property
     def max_score(self) -> int:
         """Sum of all weights — used for score normalization."""
-        return sum(
-            getattr(self, field_name)
-            for field_name in self.__class__.model_fields
-        )
+        return sum(getattr(self, field_name) for field_name in self.__class__.model_fields)
 
 
 class DetectorConfig(BaseModel):

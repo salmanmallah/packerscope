@@ -119,8 +119,7 @@ class PEStructureDetector(BaseDetector):
 
         if not checksum_valid and pe_checksum != 0:
             anomalies.append(
-                f"Checksum mismatch: header={pe_checksum:#x}, "
-                f"calculated={calc_checksum:#x}"
+                f"Checksum mismatch: header={pe_checksum:#x}, calculated={calc_checksum:#x}"
             )
             confidence = max(confidence, 0.20)
 

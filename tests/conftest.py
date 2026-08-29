@@ -29,7 +29,9 @@ def temp_pe_file(tmp_path: Path) -> Path:
     """Create a minimal mock PE file on disk."""
     file_path = tmp_path / "sample.exe"
     # Write a dummy binary file
-    content = b"MZ" + b"\x00" * 58 + b"\x80\x00\x00\x00" + b"\x00" * 64 + b"PE\x00\x00" + b"\x00" * 200
+    content = (
+        b"MZ" + b"\x00" * 58 + b"\x80\x00\x00\x00" + b"\x00" * 64 + b"PE\x00\x00" + b"\x00" * 200
+    )
     file_path.write_bytes(content)
     return file_path
 

@@ -88,9 +88,7 @@ class EntryPointDetector(BaseDetector):
         disasm = Disassembler(is_64bit=ctx.pe.is_64bit)
         if disasm.is_available():
             instructions = disasm.disassemble(ep_data, address=ep_rva, count=30)
-            disasm_lines = [
-                f"0x{i.address:08x}: {i.mnemonic} {i.op_str}" for i in instructions
-            ]
+            disasm_lines = [f"0x{i.address:08x}: {i.mnemonic} {i.op_str}" for i in instructions]
 
             # Check for jump chains
             if disasm.detect_jump_chain(ep_data, address=ep_rva):
@@ -126,10 +124,7 @@ class EntryPointDetector(BaseDetector):
         if not is_in_code and ep_section:
             is_packed = True
             confidence = max(confidence, 0.45)
-            reasons.append(
-                f"Entry point in non-code section: '{ep_section}' "
-                f"(expected .text)"
-            )
+            reasons.append(f"Entry point in non-code section: '{ep_section}' (expected .text)")
 
         # --- EP at unusual offset ---
         if ctx.pe.is_valid:
@@ -141,8 +136,7 @@ class EntryPointDetector(BaseDetector):
                     if ep_ratio > 0.8:
                         confidence = max(confidence, 0.40)
                         reasons.append(
-                            f"Entry point near end of file "
-                            f"(offset ratio: {ep_ratio:.2%})"
+                            f"Entry point near end of file (offset ratio: {ep_ratio:.2%})"
                         )
             except Exception:
                 pass

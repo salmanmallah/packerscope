@@ -279,7 +279,8 @@ class PEContext:
         return AnalysisReport(
             file_name=self.file_path.name,
             file_path=str(self.file_path),
-            metadata=self.metadata or FileMetadata(
+            metadata=self.metadata
+            or FileMetadata(
                 md5="",
                 sha1="",
                 sha256="",
@@ -318,7 +319,4 @@ class PEContext:
     def __repr__(self) -> str:
         packed_status = "packed" if self.is_packed else "not packed"
         packer = self.detected_packer.value
-        return (
-            f"<PEContext(file={self.file_path.name!r}, "
-            f"status={packed_status}, packer={packer})>"
-        )
+        return f"<PEContext(file={self.file_path.name!r}, status={packed_status}, packer={packer})>"
