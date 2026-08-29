@@ -994,7 +994,7 @@ def _get_framework_version() -> str:
     try:
         return version("packerscope")
     except PackageNotFoundError:
-        return "0.2.0"
+        return "0.2.1"
 
 
 class AnalysisReport(BaseModel):

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "packerscope"
-version = "0.2.0"
+version = "0.2.1"
 description = "Automatic packer detection, classification, and unpacking framework for Windows PE files."
 readme = "README.md"
 license = "MIT"

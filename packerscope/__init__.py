@@ -17,7 +17,7 @@ from packerscope.orchestrator import Orchestrator
 try:
     __version__ = version("packerscope")
 except PackageNotFoundError:
-    __version__ = "0.2.0"
+    __version__ = "0.2.1"
 __author__ = "Salman Mallah"
 __all__ = [
     "AnalysisReport",
