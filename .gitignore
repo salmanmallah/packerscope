@@ -66,3 +66,7 @@ logs/
 # Temporary files
 *.tmp
 *.bak
+
+# Internal / analysis files
+project_analysis.md
+prompt.txt
