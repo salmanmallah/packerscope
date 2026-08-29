@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import pytest
 
+from packerscope import __version__
 from packerscope.core.enums import (
     ConfidenceLevel,
     DetectionMethod,
@@ -195,4 +196,4 @@ class TestAnalysisReport:
         assert summary["is_packed"] is False
         assert summary["packer"] == "none"
         assert summary["file_name"] == "test.exe"
-        assert report.framework_version == "0.2.0"
+        assert report.framework_version == __version__
